@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:sample_app/models/products.dart';
-import 'package:sample_app/services/remote_service.dart';
+import 'package:sample_app/services/repositories/remote_service.dart';
 import 'package:http/http.dart' as http;
-import 'package:sample_app/views/login_page.dart';
+import 'package:sample_app/auth/register_page.dart';
 
 
 
@@ -80,28 +80,18 @@ var response = await Client().get(Uri.parse('/products')).catchError((err) {});
         title: Text('Products'),
         actions: [
           TextButton(onPressed: () async {
-             var user = ProductModel(
-                    name: 'Sample Name',
-                    description: 'Sample Description'
-                  );
-
-                  var response = await Client().post(Uri.parse('/products')).catchError((err) {});
-                  if (response == null) return;
-                  debugPrint('successful:');
-
+             
+Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                 RegisterPage()));
           
                
-          }, child: Text('Login',
+          }, child: Text('Logout',
           style: TextStyle(
             color: Colors.white
           ),),),
-          TextButton(onPressed: () {
-            Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => RegisterPage()));
-          }, child: Text('Register',
-          style: TextStyle(
-            color: Colors.white
-          ),),)
+          
         ],
         
         
@@ -116,7 +106,7 @@ var response = await Client().get(Uri.parse('/products')).catchError((err) {});
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                 ),
-              itemCount: posts?.length,
+              // itemCount: 5,
               itemBuilder: ((context, index) {
                 
               return Padding(
@@ -170,7 +160,11 @@ var response = await Client().get(Uri.parse('/products')).catchError((err) {});
               minWidth: 250,
               color: Colors.teal,
               onPressed: () {
-                post(Uri.parse('/products'));
+
+                var product = ProductModel(
+                  name: 'Lance'
+                );
+                post(Uri.parse('http://api-001.emberspec.com/api/products'));
               }),
           ),
         ],

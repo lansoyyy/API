@@ -18,45 +18,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
       late String password = '';
 
-Future <void> postData(String  email, password) async {
-    var jsonResponse ;
-    Map data = {
 
-      'email': email,
-      'password': password,
-
-    };
-    print(data);
-
-     String body = json.encode(data);
-    var url = 'https://api-001.emberspec.com/api/login';
-    var response = await http.post(
-      Uri.parse(url),
-      body: body,
-      headers: {
-        "Content-Type": "application/json",
-        "accept": "application/json",
-        "Access-Control-Allow-Origin": "*"
-      },
-    ).timeout(Duration(seconds: 10));
-
-    print(response.body);
-    print(response.statusCode);
-
-    if (response.statusCode == 201) {
-       jsonResponse = json.decode(response.body.toString());
-
-        Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => HomePage()));
-      // ignore: avoid_print
-      print('success');
-    } else {
-      print('error');
-    }
-
-
-
-}
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +68,7 @@ Future <void> postData(String  email, password) async {
               minWidth: 200,
               color: Colors.teal,
               onPressed: () {
-                postData(email, password);
+                
               },),
           ],
         ),

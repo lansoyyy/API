@@ -29,7 +29,7 @@ class Client {
     var url = Uri.parse('http://api-001.emberspec.com/api/products');
     var _payload = json.encode(object);
     var _headers = {
-      'Authorization': 'Bearer fiKeumMDD79c5SOgGLmfScjIyf5L3haJsrJRH93Y',
+      
       'Content-Type': 'application/json',
       'accept': "application/json",
       "Access-Control-Allow-Origin": "*",
@@ -38,6 +38,7 @@ class Client {
 
     var response = await client.post(url, body: _payload, headers: _headers);
     if (response.statusCode == 201) {
+      print(response.body);
       return response.body;
     } else {
       //throw exception and catch it in UI
