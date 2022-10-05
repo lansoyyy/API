@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:sample_app/services/http_get/get_product.dart';
 import 'package:sample_app/services/http_post/post_product.dart';
 import 'package:sample_app/views/auth/login_page.dart';
 import 'package:sample_app/models/products.dart';
@@ -24,11 +25,25 @@ class _HomePageState extends State<HomePage> {
   late String email = '';
   late String password = '';
 
+  bool hasLoaded = true;
+
+  List<ProductModel?> products = [];
+
+  getProductData() async {
+    products = await DataService().getProduct(
+        '/products', '265|vpfRdM3XbJHFvMCrzT7NCFhZzU2AsZpFW9JLkGdf');
+    setState(() {
+      hasLoaded = true;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
 
     getToken();
+
+    getProductData();
   }
 
   getToken() async {
@@ -61,80 +76,88 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: SizedBox(
-              child: GridView.builder(
-                  physics: BouncingScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                  ),
-                  // itemCount: 5,
-                  itemBuilder: ((context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Container(
-                            child: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Image.network(
-                                  'https://pngimg.com/uploads/running_shoes/running_shoes_PNG5805.png'),
-                            ),
-                            height: 120,
-                            width: 200,
-                            decoration: BoxDecoration(
-                              color: Colors.teal,
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                topRight: Radius.circular(10),
-                              ),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () async {},
-                            child: Container(
+      body: Visibility(
+        visible: isLoaded,
+        child: Column(
+          children: [
+            Expanded(
+              child: SizedBox(
+                child: GridView.builder(
+                    itemCount: products.length,
+                    physics: BouncingScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                    ),
+                    // itemCount: 5,
+                    itemBuilder: ((context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            Container(
                               child: Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(5, 10, 0, 10),
-                                child: Text('Shoes ${index}'),
+                                padding: const EdgeInsets.all(10.0),
+                                child: Image.network(
+                                    'https://pngimg.com/uploads/running_shoes/running_shoes_PNG5805.png'),
                               ),
-                              height: 60,
+                              height: 120,
                               width: 200,
                               decoration: BoxDecoration(
-                                color: Colors.white,
+                                color: Colors.teal,
                                 borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(10),
-                                  bottomRight: Radius.circular(10),
+                                  topLeft: Radius.circular(10),
+                                  topRight: Radius.circular(10),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    );
-                  })),
+                            GestureDetector(
+                              onTap: () async {},
+                              child: Container(
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(5, 10, 0, 10),
+                                  child: Text('Shoes ${index}'),
+                                ),
+                                height: 60,
+                                width: 200,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(10),
+                                    bottomRight: Radius.circular(10),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    })),
+              ),
             ),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: MaterialButton(
-                child: Text(
-                  'Add Product',
-                  style: TextStyle(
-                    color: Colors.white,
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: MaterialButton(
+                  child: Text(
+                    'Add Product',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-                minWidth: 250,
-                color: Colors.teal,
-                onPressed: () {
-                  addProduct("Car", "123", "My Description", 500, true, token);
+                  minWidth: 250,
+                  color: Colors.teal,
+                  onPressed: () {
+                    addProduct(
+                        "Car", "123", "My Description", 500, true, token);
 
-                  print(token);
-                }),
-          ),
-        ],
+                    print(token);
+                  }),
+            ),
+          ],
+        ),
+        replacement: Center(
+          child: CircularProgressIndicator(),
+        ),
       ),
     );
   }
