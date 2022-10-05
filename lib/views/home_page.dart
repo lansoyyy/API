@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
-import 'package:sample_app/auth/login_page.dart';
+import 'package:sample_app/services/http_post/post_product.dart';
+import 'package:sample_app/views/auth/login_page.dart';
 import 'package:sample_app/models/products.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../services/repositories/http_post/logout.dart';
+import '../services/http_post/post_logout.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -28,30 +29,15 @@ class _HomePageState extends State<HomePage> {
     super.initState();
 
     getToken();
-    getProducts();
   }
 
   getToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      token = prefs.getString('token')!;
+      token = prefs.getString('login_token')!;
       email = prefs.getString('email')!;
       password = prefs.getString('password')!;
     });
-  }
-
-  void getProducts() async {
-    try {
-      var response =
-          await Client().get(Uri.parse('/products')).catchError((err) {});
-      if (response == null) return;
-      debugPrint('successful:');
-
-      var users = productModelFromJson(response.body);
-      debugPrint('Users count: ' + users.length.toString());
-    } catch (e) {
-      print(e);
-    }
   }
 
   @override
@@ -65,8 +51,8 @@ class _HomePageState extends State<HomePage> {
           TextButton(
             onPressed: () async {
               logout(email, password);
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => LoginPage()));
+              // Navigator.of(context).pushReplacement(
+              //     MaterialPageRoute(builder: (context) => LoginPage()));
             },
             child: Text(
               'Logout',
@@ -143,7 +129,9 @@ class _HomePageState extends State<HomePage> {
                 minWidth: 250,
                 color: Colors.teal,
                 onPressed: () {
-                  post(Uri.parse('http://api-001.emberspec.com/api/products'));
+                  addProduct("Car", "123", "My Description", 500, true, token);
+
+                  print(token);
                 }),
           ),
         ],
