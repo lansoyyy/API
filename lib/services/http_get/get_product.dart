@@ -7,10 +7,10 @@ class DataService {
   Future<dynamic> getProduct(String api, token) async {
     var url = Uri.parse(APIConfig().baseUrl + api);
     var _headers = {
-      'Authorization': 'Bearer $token',
       "Content-Type": "application/json",
       "accept": "application/json",
-      "Access-Control-Allow-Origin": "*"
+      "Access-Control-Allow-Origin": "*",
+      'Authorization': 'Bearer $token'
     };
 
     var response = await http.Client().get(url, headers: _headers);
@@ -19,6 +19,10 @@ class DataService {
     } else {
       //throw exception and catch it in UI
     }
+
+    print("Token" + token);
+
+    print(response.body);
 
     print("Length " + response.body.length.toString());
   }

@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
   List<ProductModel>? posts = [];
   var isLoaded = false;
 
-  late String token;
+  late String token = '';
 
   late String email = '';
   late String password = '';
@@ -30,8 +30,9 @@ class _HomePageState extends State<HomePage> {
   List<ProductModel?> products = [];
 
   getProductData() async {
-    products = await DataService().getProduct(
-        '/products', '265|vpfRdM3XbJHFvMCrzT7NCFhZzU2AsZpFW9JLkGdf');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    products = await DataService()
+        .getProduct('/products', prefs.getString('login_token')!);
     setState(() {
       hasLoaded = true;
     });
@@ -41,19 +42,19 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
 
-    getToken();
+    // getToken();
 
     getProductData();
   }
 
-  getToken() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      token = prefs.getString('login_token')!;
-      email = prefs.getString('email')!;
-      password = prefs.getString('password')!;
-    });
-  }
+  // getToken() async {
+
+  //   setState(() {
+  //     token = prefs.getString('login_token')!;
+  //     email = prefs.getString('email')!;
+  //     password = prefs.getString('password')!;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -65,9 +66,13 @@ class _HomePageState extends State<HomePage> {
         actions: [
           TextButton(
             onPressed: () async {
-              logout(email, password);
-              // Navigator.of(context).pushReplacement(
-              //     MaterialPageRoute(builder: (context) => LoginPage()));
+              try {
+                logout(email, password);
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => LoginPage()));
+              } catch (e) {
+                print(e);
+              }
             },
             child: Text(
               'Logout',
@@ -76,88 +81,81 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: Visibility(
-        visible: isLoaded,
-        child: Column(
-          children: [
-            Expanded(
-              child: SizedBox(
-                child: GridView.builder(
-                    itemCount: products.length,
-                    physics: BouncingScrollPhysics(),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                    ),
-                    // itemCount: 5,
-                    itemBuilder: ((context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: [
-                            Container(
-                              child: Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Image.network(
-                                    'https://pngimg.com/uploads/running_shoes/running_shoes_PNG5805.png'),
+      body: Column(
+        children: [
+          Expanded(
+            child: SizedBox(
+              child: GridView.builder(
+                  itemCount: products.length,
+                  physics: BouncingScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                  ),
+                  // itemCount: 5,
+                  itemBuilder: ((context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Container(
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Image.network(
+                                  'https://pngimg.com/uploads/running_shoes/running_shoes_PNG5805.png'),
+                            ),
+                            height: 120,
+                            width: 200,
+                            decoration: BoxDecoration(
+                              color: Colors.teal,
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10),
                               ),
-                              height: 120,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () async {},
+                            child: Container(
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(5, 10, 0, 10),
+                                child: Text('Shoes ${index}'),
+                              ),
+                              height: 60,
                               width: 200,
                               decoration: BoxDecoration(
-                                color: Colors.teal,
+                                color: Colors.white,
                                 borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(10),
-                                  topRight: Radius.circular(10),
+                                  bottomLeft: Radius.circular(10),
+                                  bottomRight: Radius.circular(10),
                                 ),
                               ),
                             ),
-                            GestureDetector(
-                              onTap: () async {},
-                              child: Container(
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(5, 10, 0, 10),
-                                  child: Text('Shoes ${index}'),
-                                ),
-                                height: 60,
-                                width: 200,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(10),
-                                    bottomRight: Radius.circular(10),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    })),
-              ),
+                          ),
+                        ],
+                      ),
+                    );
+                  })),
             ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: MaterialButton(
-                  child: Text(
-                    'Add Product',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: MaterialButton(
+                child: Text(
+                  'Add Product',
+                  style: TextStyle(
+                    color: Colors.white,
                   ),
-                  minWidth: 250,
-                  color: Colors.teal,
-                  onPressed: () {
-                    addProduct(
-                        "Car", "123", "My Description", 500, true, token);
+                ),
+                minWidth: 250,
+                color: Colors.teal,
+                onPressed: () {
+                  addProduct("Car", "123", "My Description", 500, true, token);
 
-                    print(token);
-                  }),
-            ),
-          ],
-        ),
-        replacement: Center(
-          child: CircularProgressIndicator(),
-        ),
+                  print(token);
+                }),
+          ),
+        ],
       ),
     );
   }
