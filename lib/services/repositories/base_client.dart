@@ -27,7 +27,7 @@ class Client {
 
   Future<dynamic> post(dynamic object) async {
     var url = Uri.parse('http://api-001.emberspec.com/api/products');
-    var _payload = json.encode(object);
+    
     var _headers = {
       
       'Content-Type': 'application/json',
@@ -41,8 +41,11 @@ class Client {
       
     }, headers: _headers);
     if (response.statusCode == 200) {
-      print(response.body);
-      return response.body;
+
+
+      var mydata = json.encode(response.body);
+      print(mydata);
+      return mydata;
     } else {
       //throw exception and catch it in UI
     }

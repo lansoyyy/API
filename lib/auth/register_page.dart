@@ -19,6 +19,36 @@ class _RegisterPageState extends State<RegisterPage> {
       late String password = '';
 
 
+        register() async {
+    var client = http.Client();
+                var url = Uri.parse('http://api-001.emberspec.com/api/login');
+    
+    var _headers = {
+      
+      
+      'accept': "application/json",
+      "Access-Control-Allow-Origin": "*",
+      
+    };
+
+    var response = await client.post(url, body: {
+            'username': email,
+             'password': password,
+             'name': name,
+      
+    }, headers: _headers);
+    if (response.statusCode == 200) {
+
+
+      var mydata = json.encode(response.body);
+      print(mydata);
+      return mydata;
+    } else {
+      //throw exception and catch it in UI
+    }
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -74,6 +104,8 @@ class _RegisterPageState extends State<RegisterPage> {
               minWidth: 200,
               color: Colors.teal,
               onPressed: () {
+
+                register();
                 Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
                                             builder: (context) =>
