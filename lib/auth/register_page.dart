@@ -23,6 +23,12 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        
+        backgroundColor: Colors.teal,
+        title: Text('Register'),
+        centerTitle: true,
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -68,7 +74,10 @@ class _RegisterPageState extends State<RegisterPage> {
               minWidth: 200,
               color: Colors.teal,
               onPressed: () {
-                
+                Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                 HomePage()));
               },),
           ],
         ),

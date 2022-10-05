@@ -36,8 +36,11 @@ class Client {
       
     };
 
-    var response = await client.post(url, body: _payload, headers: _headers);
-    if (response.statusCode == 201) {
+    var response = await client.post(url, body: {
+            'name': 'application/json',
+      
+    }, headers: _headers);
+    if (response.statusCode == 200) {
       print(response.body);
       return response.body;
     } else {

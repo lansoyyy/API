@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:sample_app/auth/login_page.dart';
 import 'package:sample_app/models/products.dart';
 import 'package:sample_app/services/repositories/remote_service.dart';
 import 'package:http/http.dart' as http;
@@ -84,7 +85,7 @@ var response = await Client().get(Uri.parse('/products')).catchError((err) {});
 Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                 RegisterPage()));
+                                                 LoginPage()));
           
                
           }, child: Text('Logout',
@@ -161,9 +162,7 @@ Navigator.of(context).pushReplacement(
               color: Colors.teal,
               onPressed: () {
 
-                var product = ProductModel(
-                  name: 'Lance'
-                );
+                
                 post(Uri.parse('http://api-001.emberspec.com/api/products'));
               }),
           ),
