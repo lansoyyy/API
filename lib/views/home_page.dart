@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
-import 'package:sample_app/services/http_get/get_product.dart';
+
 import 'package:sample_app/services/http_post/post_product.dart';
 import 'package:sample_app/views/auth/login_page.dart';
 import 'package:sample_app/models/products.dart';
-
+import "package:get_storage/get_storage.dart";
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../services/http_get/base_service.dart';
 import '../services/http_post/post_logout.dart';
 
 class HomePage extends StatefulWidget {
@@ -17,7 +18,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<ProductModel>? posts = [];
+  final box = GetStorage();
+
   var isLoaded = false;
 
   late String token = '';
@@ -30,9 +32,7 @@ class _HomePageState extends State<HomePage> {
   List<ProductModel?> products = [];
 
   getProductData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    products = await DataService()
-        .getProduct('/products', prefs.getString('login_token')!);
+    products = (await GetProductService().getPosts('/products'))!;
     setState(() {
       hasLoaded = true;
     });
@@ -42,19 +42,8 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
 
-    // getToken();
-
     getProductData();
   }
-
-  // getToken() async {
-
-  //   setState(() {
-  //     token = prefs.getString('login_token')!;
-  //     email = prefs.getString('email')!;
-  //     password = prefs.getString('password')!;
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -150,7 +139,7 @@ class _HomePageState extends State<HomePage> {
                 minWidth: 250,
                 color: Colors.teal,
                 onPressed: () {
-                  addProduct("Car", "123", "My Description", 500, true, token);
+                  addProduct("Lamborghini", "123", "My Description", 500, true);
 
                   print(token);
                 }),
