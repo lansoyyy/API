@@ -4,6 +4,7 @@ import 'package:http/http.dart';
 import 'package:sample_app/services/http_delete/delete_products.dart';
 
 import 'package:sample_app/services/http_post/post_product.dart';
+import 'package:sample_app/services/http_put/put_product.dart';
 import 'package:sample_app/views/auth/login_page.dart';
 import 'package:sample_app/models/products.dart';
 import "package:get_storage/get_storage.dart";
@@ -33,6 +34,10 @@ class _HomePageState extends State<HomePage> {
   late String productDescription;
   late String productPrice;
   late String imageURL;
+
+  late String newProductPrice;
+
+  late String newProductName;
 
   bool hasLoaded = true;
 
@@ -99,18 +104,59 @@ class _HomePageState extends State<HomePage> {
                                 children: [
                                   SlidableAction(
                                     onPressed: (context) {
-                                      deleteProduct(
-                                          box.read('jsonData')[i]['id']);
-
-                                      Navigator.of(context).pushReplacement(
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  HomePage()));
+                                      showDialog(
+                                          context: context,
+                                          builder: ((context) {
+                                            return AlertDialog(
+                                              title: Text(
+                                                  'Enter Product Description'),
+                                              content: Column(
+                                                children: [
+                                                  TextFormField(
+                                                    onChanged: (_input) {
+                                                      newProductName = _input;
+                                                    },
+                                                    decoration: InputDecoration(
+                                                        label: Text(
+                                                            'New Product Name')),
+                                                  ),
+                                                  TextFormField(
+                                                    onChanged: (_input) {
+                                                      newProductPrice = _input;
+                                                    },
+                                                    decoration: InputDecoration(
+                                                        label: Text(
+                                                            'New Product Price')),
+                                                  ),
+                                                ],
+                                              ),
+                                              actions: [
+                                                MaterialButton(
+                                                  onPressed: () {
+                                                    putProduct(
+                                                        box.read('jsonData')[i]
+                                                            ['id'],
+                                                        newProductName,
+                                                        newProductPrice,
+                                                        box.read('jsonData')[i]
+                                                            ['image_link']);
+                                                    Navigator.of(context)
+                                                        .pushReplacement(
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        HomePage()));
+                                                  },
+                                                  child: Text('Add Product'),
+                                                ),
+                                              ],
+                                            );
+                                          }));
                                     },
-                                    backgroundColor: Colors.red,
+                                    backgroundColor: Colors.blue,
                                     foregroundColor: Colors.white,
                                     icon: Icons.delete,
-                                    label: 'Delete',
+                                    label: 'Update',
                                   )
                                 ],
                               ),
