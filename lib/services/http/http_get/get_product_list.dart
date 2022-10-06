@@ -5,13 +5,11 @@ import 'package:sample_app/models/products.dart';
 import 'package:sample_app/services/config/api_config.dart';
 import 'package:get_storage/get_storage.dart';
 
-class GetProductService {
+class GetProductList {
   final box = GetStorage();
 
-  Future<ProductModel> getPosts(String api) async {
+  Future<ProductModel> getMultipleProducts(String api) async {
     var uri = Uri.parse(APIConfig().baseUrl + api + '?page=5');
-
-    var client = http.Client();
 
     final headers = await http.get(
       uri,
