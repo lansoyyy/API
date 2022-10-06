@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import "package:get_storage/get_storage.dart";
-import '../config/api_config.dart';
+import '../../config/api_config.dart';
 
 Future<void> addProduct(String name, String image_link, String description,
     int price, bool is_published) async {

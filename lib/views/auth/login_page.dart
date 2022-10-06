@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get_storage/get_storage.dart';
 import '../../services/config/api_config.dart';
-import '../../services/http_post/post_login.dart';
+import '../../services/http/http_post/post_login.dart';
 
 class LoginPage extends StatefulWidget {
   @override

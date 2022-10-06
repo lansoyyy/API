@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:http/http.dart';
-import 'package:sample_app/services/http_delete/delete_products.dart';
+import 'package:sample_app/services/http/http_delete/delete_products.dart';
 
-import 'package:sample_app/services/http_post/post_product.dart';
-import 'package:sample_app/services/http_put/put_product.dart';
+import 'package:sample_app/services/http/http_post/post_product.dart';
+import 'package:sample_app/services/http/http_put/put_product.dart';
 import 'package:sample_app/views/auth/login_page.dart';
 import 'package:sample_app/models/products.dart';
 import "package:get_storage/get_storage.dart";
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../services/http_get/base_service.dart';
-import '../services/http_post/post_logout.dart';
+import '../services/http/http_get/base_service.dart';
+import '../services/http/http_post/post_logout.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

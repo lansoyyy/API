@@ -6,7 +6,7 @@ import 'package:sample_app/views/auth/login_page.dart';
 import 'package:sample_app/views/home_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../services/http_post/post_register.dart';
+import '../../services/http/http_post/post_register.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
