@@ -3,26 +3,22 @@ import 'package:http/http.dart' as http;
 import "package:get_storage/get_storage.dart";
 import '../config/api_config.dart';
 
-Future<void> LoginOfuser(email, password) async {
+Future<void> deleteProduct(int id) async {
   final box = GetStorage();
   var jsonResponse;
 
-  Map data = {
-    'email': email,
-    'password': password,
-  };
-
-  String body = json.encode(data);
-  var url = APIConfig().baseUrl + '/login';
-  var response = await http.post(
+  var url = APIConfig().baseUrl + '/products/$id';
+  var response = await http.delete(
     Uri.parse(url),
-    body: body,
     headers: {
       "Content-Type": "application/json",
       "accept": "application/json",
-      "Access-Control-Allow-Origin": "*"
+      "Access-Control-Allow-Origin": "*",
+      "Authorization": "Bearer ${box.read('token')}"
     },
-  ).timeout(Duration(seconds: 10));
+  );
+
+  print('token' + box.read('token'));
 
   // print(response.body["token"]);
   // prefs.setString("token", jsonResponse['response']['token']);
@@ -30,9 +26,6 @@ Future<void> LoginOfuser(email, password) async {
   print(response.statusCode);
 
   if (response.statusCode == 201) {
-    jsonResponse = json.decode(response.body.toString());
-    print('login access token is -> ${json.decode(response.body)['token']}');
-
     // ignore: avoid_print
     print('success');
   } else {

@@ -6,7 +6,8 @@ import 'package:sample_app/views/home_page.dart';
 import 'package:sample_app/views/widgets/button_widget.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:get_storage/get_storage.dart';
+import '../../services/config/api_config.dart';
 import '../../services/http_post/post_login.dart';
 
 class LoginPage extends StatefulWidget {
@@ -15,6 +16,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final box = GetStorage();
   late String email;
 
   late String password;
@@ -52,8 +54,48 @@ class _LoginPageState extends State<LoginPage> {
               height: 50,
             ),
             ButtonWidget(
-                onPressed: () {
-                  LoginOfuser(email, password);
+                onPressed: () async {
+                  final box = GetStorage();
+                  var jsonResponse;
+
+                  Map data = {
+                    'email': email,
+                    'password': password,
+                  };
+
+                  String body = json.encode(data);
+                  var url = APIConfig().baseUrl + '/login';
+                  var response = await http.post(
+                    Uri.parse(url),
+                    body: body,
+                    headers: {
+                      "Content-Type": "application/json",
+                      "accept": "application/json",
+                      "Access-Control-Allow-Origin": "*"
+                    },
+                  ).timeout(Duration(seconds: 10));
+
+                  // print(response.body["token"]);
+                  // prefs.setString("token", jsonResponse['response']['token']);
+
+                  print(response.statusCode);
+
+                  if (response.statusCode == 201) {
+                    jsonResponse = json.decode(response.body.toString());
+                    print(
+                        'login access token is -> ${json.decode(response.body)['token']}');
+
+                    // ignore: avoid_print
+                    print('success');
+                  } else {
+                    print('error');
+                  }
+                  box.write('token', json.decode(response.body)['token']);
+
+                  await Future.delayed(Duration(seconds: 1));
+
+                  print(box.read('token'));
+
                   Navigator.of(context).pushReplacement(
                       MaterialPageRoute(builder: (context) => HomePage()));
                 },

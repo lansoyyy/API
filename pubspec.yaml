@@ -39,6 +39,7 @@ dependencies:
   http:
   shared_preferences: ^2.0.15
   get_storage:
+  flutter_slidable:
 
 dev_dependencies:
   flutter_test:

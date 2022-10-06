@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:http/http.dart';
+import 'package:sample_app/services/http_delete/delete_products.dart';
 
 import 'package:sample_app/services/http_post/post_product.dart';
 import 'package:sample_app/views/auth/login_page.dart';
@@ -27,12 +29,18 @@ class _HomePageState extends State<HomePage> {
   late String email = '';
   late String password = '';
 
+  late String productName;
+  late String productDescription;
+  late String productPrice;
+  late String imageURL;
+
   bool hasLoaded = true;
 
   List<ProductModel?> products = [];
 
   getProductData() async {
-    products = (await GetProductService().getPosts('/products'))!;
+    products = (await GetProductService().getPosts('/products'))
+        as List<ProductModel?>;
     setState(() {
       hasLoaded = true;
     });
@@ -70,81 +78,197 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: SizedBox(
-              child: GridView.builder(
-                  itemCount: products.length,
-                  physics: BouncingScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                  ),
-                  // itemCount: 5,
-                  itemBuilder: ((context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
+      body: RefreshIndicator(
+        onRefresh: () {
+          return Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => HomePage()));
+        },
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            hasLoaded
+                ? Expanded(
+                    child: SizedBox(
+                      child: ListView(
                         children: [
-                          Container(
-                            child: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Image.network(
-                                  'https://pngimg.com/uploads/running_shoes/running_shoes_PNG5805.png'),
-                            ),
-                            height: 120,
-                            width: 200,
-                            decoration: BoxDecoration(
-                              color: Colors.teal,
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                topRight: Radius.circular(10),
+                          for (int i = 0; i < box.read('jsonData').length; i++)
+                            Slidable(
+                              startActionPane: ActionPane(
+                                motion: const ScrollMotion(),
+                                children: [
+                                  SlidableAction(
+                                    onPressed: (context) {
+                                      deleteProduct(
+                                          box.read('jsonData')[i]['id']);
+
+                                      Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  HomePage()));
+                                    },
+                                    backgroundColor: Colors.red,
+                                    foregroundColor: Colors.white,
+                                    icon: Icons.delete,
+                                    label: 'Delete',
+                                  )
+                                ],
+                              ),
+                              endActionPane: ActionPane(
+                                motion: const ScrollMotion(),
+                                children: [
+                                  SlidableAction(
+                                    onPressed: (context) {
+                                      deleteProduct(
+                                          box.read('jsonData')[i]['id']);
+
+                                      Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  HomePage()));
+                                    },
+                                    backgroundColor: Colors.red,
+                                    foregroundColor: Colors.white,
+                                    icon: Icons.delete,
+                                    label: 'Delete',
+                                  )
+                                ],
+                              ),
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        10, 10, 10, 0),
+                                    child: Container(
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            10, 10, 10, 0),
+                                        child: Image.network(box
+                                            .read('jsonData')[i]['image_link']),
+                                      ),
+                                      height: 300,
+                                      width: 300,
+                                      decoration: BoxDecoration(
+                                        color: Colors.teal,
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(10),
+                                          topRight: Radius.circular(10),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () async {
+                                      print(box.read('jsonData')[i]['id']);
+                                    },
+                                    child: Container(
+                                      child: Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              10, 10, 0, 10),
+                                          child: ListTile(
+                                            title: Text(
+                                              box.read('jsonData')[i]['name'],
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                              ),
+                                            ),
+                                            trailing: Text(
+                                              box.read('jsonData')[i]['price'],
+                                              style: TextStyle(
+                                                fontSize: 15,
+                                              ),
+                                            ),
+                                          )),
+                                      height: 60,
+                                      width: 300,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.only(
+                                          bottomLeft: Radius.circular(10),
+                                          bottomRight: Radius.circular(10),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                          ),
-                          GestureDetector(
-                            onTap: () async {},
-                            child: Container(
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(5, 10, 0, 10),
-                                child: Text('Shoes ${index}'),
-                              ),
-                              height: 60,
-                              width: 200,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(10),
-                                  bottomRight: Radius.circular(10),
-                                ),
-                              ),
-                            ),
-                          ),
                         ],
                       ),
-                    );
-                  })),
-            ),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: MaterialButton(
-                child: Text(
-                  'Add Product',
-                  style: TextStyle(
-                    color: Colors.white,
+                    ),
+                  )
+                : Center(
+                    child: CircularProgressIndicator(),
                   ),
-                ),
-                minWidth: 250,
-                color: Colors.teal,
-                onPressed: () {
-                  addProduct("Lamborghini", "123", "My Description", 500, true);
-
-                  print(token);
-                }),
-          ),
-        ],
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: MaterialButton(
+                  child: Text(
+                    'Add Product',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  minWidth: 250,
+                  color: Colors.teal,
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: ((context) {
+                          return AlertDialog(
+                            title: Text('Enter Product Description'),
+                            content: Column(
+                              children: [
+                                TextFormField(
+                                  onChanged: (_input) {
+                                    productName = _input;
+                                  },
+                                  decoration: InputDecoration(
+                                      label: Text('Product Name')),
+                                ),
+                                TextFormField(
+                                  onChanged: (_input) {
+                                    productDescription = _input;
+                                  },
+                                  decoration: InputDecoration(
+                                      label: Text('Product Description')),
+                                ),
+                                TextFormField(
+                                  onChanged: (_input) {
+                                    productPrice = _input;
+                                  },
+                                  decoration:
+                                      InputDecoration(label: Text('Price')),
+                                ),
+                                TextFormField(
+                                  onChanged: (_input) {
+                                    imageURL = _input;
+                                  },
+                                  decoration:
+                                      InputDecoration(label: Text('Image URL')),
+                                ),
+                              ],
+                            ),
+                            actions: [
+                              MaterialButton(
+                                onPressed: () {
+                                  addProduct(
+                                      productName,
+                                      imageURL,
+                                      productDescription,
+                                      int.parse(productPrice),
+                                      true);
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text('Add Product'),
+                              ),
+                            ],
+                          );
+                        }));
+                  }),
+            ),
+          ],
+        ),
       ),
     );
   }
