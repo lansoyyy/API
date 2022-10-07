@@ -7,7 +7,7 @@ Future<void> deleteProduct(int id) async {
   final box = GetStorage();
   var jsonResponse;
 
-  var url = APIConfig().baseUrl + '/products/$id';
+  var url = '${APIConfig().baseUrl}/products/$id';
   var response = await http.delete(
     Uri.parse(url),
     headers: {

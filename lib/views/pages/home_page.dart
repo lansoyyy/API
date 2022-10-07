@@ -60,7 +60,7 @@ class _HomePageState extends State<HomePage> {
     getProductData();
   }
 
-  bool _selected = false;
+  final bool _selected = false;
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +68,7 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
         backgroundColor: Colors.teal,
-        title: Text('Products'),
+        title: const Text('Products'),
         actions: [
           IconButton(
             onPressed: () {
@@ -80,14 +80,14 @@ class _HomePageState extends State<HomePage> {
                 print(e);
               }
             },
-            icon: Icon(Icons.logout),
+            icon: const Icon(Icons.logout),
           ),
         ],
       ),
       body: RefreshIndicator(
         onRefresh: () {
           return Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => HomePage()));
+              MaterialPageRoute(builder: (context) => const HomePage()));
         },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -107,7 +107,8 @@ class _HomePageState extends State<HomePage> {
                                   getSingleProduct(
                                       box.read('jsonData')[i]['id']);
 
-                                  await Future.delayed(Duration(seconds: 3));
+                                  await Future.delayed(
+                                      const Duration(seconds: 3));
 
                                   print("Product Data" +
                                       box.read(
@@ -115,7 +116,8 @@ class _HomePageState extends State<HomePage> {
                                   print(
                                       box.read('jsonData')[i]['id'].toString());
                                   Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => ProductPage()));
+                                      builder: (context) =>
+                                          const ProductPage()));
                                 },
                                 child: Slidable(
                                   startActionPane: ActionPane(
@@ -127,27 +129,29 @@ class _HomePageState extends State<HomePage> {
                                               context: context,
                                               builder: ((context) {
                                                 return AlertDialog(
-                                                  title: Text(
+                                                  title: const Text(
                                                       'Enter Product Description'),
                                                   content: Column(
                                                     children: [
                                                       TextFormField(
-                                                        onChanged: (_input) {
+                                                        onChanged: (input) {
                                                           newProductName =
-                                                              _input;
+                                                              input;
                                                         },
-                                                        decoration: InputDecoration(
-                                                            label: Text(
-                                                                'New Product Name')),
+                                                        decoration:
+                                                            const InputDecoration(
+                                                                label: Text(
+                                                                    'New Product Name')),
                                                       ),
                                                       TextFormField(
-                                                        onChanged: (_input) {
+                                                        onChanged: (input) {
                                                           newProductPrice =
-                                                              _input;
+                                                              input;
                                                         },
-                                                        decoration: InputDecoration(
-                                                            label: Text(
-                                                                'New Product Price')),
+                                                        decoration:
+                                                            const InputDecoration(
+                                                                label: Text(
+                                                                    'New Product Price')),
                                                       ),
                                                     ],
                                                   ),
@@ -164,17 +168,17 @@ class _HomePageState extends State<HomePage> {
                                                                 ['image_link']);
 
                                                         await Future.delayed(
-                                                            Duration(
+                                                            const Duration(
                                                                 seconds: 5));
                                                         Navigator.of(context)
                                                             .pushReplacement(
                                                                 MaterialPageRoute(
                                                                     builder:
                                                                         (context) =>
-                                                                            HomePage()));
+                                                                            const HomePage()));
                                                       },
-                                                      child:
-                                                          Text('Add Product'),
+                                                      child: const Text(
+                                                          'Add Product'),
                                                     ),
                                                   ],
                                                 );
@@ -196,11 +200,11 @@ class _HomePageState extends State<HomePage> {
                                               box.read('jsonData')[i]['id']);
 
                                           await Future.delayed(
-                                              Duration(seconds: 5));
+                                              const Duration(seconds: 5));
                                           Navigator.of(context).pushReplacement(
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      HomePage()));
+                                                      const HomePage()));
                                         },
                                         backgroundColor: Colors.red,
                                         foregroundColor: Colors.white,
@@ -222,14 +226,6 @@ class _HomePageState extends State<HomePage> {
                                             message: 'HOT SALE',
                                             location: BannerLocation.topEnd,
                                             child: Container(
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.fromLTRB(
-                                                        10, 10, 10, 0),
-                                                child: Image.network(
-                                                    box.read('jsonData')[i]
-                                                        ['image_link']),
-                                              ),
                                               height: 300,
                                               width: 400,
                                               decoration: BoxDecoration(
@@ -240,15 +236,33 @@ class _HomePageState extends State<HomePage> {
                                                   Colors.teal[200]!,
                                                   Colors.teal[300]!,
                                                 ]),
-                                                borderRadius: BorderRadius.only(
+                                                borderRadius:
+                                                    const BorderRadius.only(
                                                   topLeft: Radius.circular(10),
                                                   topRight: Radius.circular(10),
                                                 ),
+                                              ),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        10, 10, 10, 0),
+                                                child: Image.network(
+                                                    box.read('jsonData')[i]
+                                                        ['image_link']),
                                               ),
                                             ),
                                           ),
                                         ),
                                         Container(
+                                          height: 60,
+                                          width: 315,
+                                          decoration: const BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.only(
+                                              bottomLeft: Radius.circular(10),
+                                              bottomRight: Radius.circular(10),
+                                            ),
+                                          ),
                                           child: Padding(
                                               padding:
                                                   const EdgeInsets.fromLTRB(
@@ -257,7 +271,7 @@ class _HomePageState extends State<HomePage> {
                                                 title: Text(
                                                   box.read('jsonData')[i]
                                                       ['name'],
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     fontSize: 18,
                                                     fontWeight: FontWeight.bold,
                                                   ),
@@ -284,7 +298,7 @@ class _HomePageState extends State<HomePage> {
                                                     child: Text(
                                                       box.read('jsonData')[i]
                                                           ['price'],
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                         fontSize: 20,
                                                         color: Colors.white,
                                                         fontWeight:
@@ -294,15 +308,6 @@ class _HomePageState extends State<HomePage> {
                                                   ),
                                                 ),
                                               )),
-                                          height: 60,
-                                          width: 315,
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.only(
-                                              bottomLeft: Radius.circular(10),
-                                              bottomRight: Radius.circular(10),
-                                            ),
-                                          ),
                                         ),
                                       ],
                                     ),
@@ -318,7 +323,7 @@ class _HomePageState extends State<HomePage> {
                                       if (box.read('page') == 1) {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
-                                          SnackBar(
+                                          const SnackBar(
                                             content: Text(
                                                 'Cannot Procceed. This page is the last page'),
                                           ),
@@ -328,12 +333,12 @@ class _HomePageState extends State<HomePage> {
                                             .getMultipleProducts('/products');
 
                                         await Future.delayed(
-                                            Duration(seconds: 5));
+                                            const Duration(seconds: 5));
 
                                         Navigator.of(context).pushReplacement(
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    HomePage()));
+                                                    const HomePage()));
                                       }
                                       int page = box.read('page');
 
@@ -343,14 +348,14 @@ class _HomePageState extends State<HomePage> {
 
                                       box.write('page', newPage);
                                     },
-                                    child: Text('Go Back')),
+                                    child: const Text('Go Back')),
                                 trailing: TextButton(
                                     onPressed: () async {
                                       if (box.read('page') ==
                                           box.read('pageLength')) {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
-                                          SnackBar(
+                                          const SnackBar(
                                             content: Text(
                                                 'Cannot Procceed. This page is the last page'),
                                           ),
@@ -360,12 +365,12 @@ class _HomePageState extends State<HomePage> {
                                             .getMultipleProducts('/products');
 
                                         await Future.delayed(
-                                            Duration(seconds: 5));
+                                            const Duration(seconds: 5));
 
                                         Navigator.of(context).pushReplacement(
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    HomePage()));
+                                                    const HomePage()));
                                       }
                                       int page = box.read('page');
 
@@ -375,7 +380,7 @@ class _HomePageState extends State<HomePage> {
 
                                       box.write('page', newPage);
                                     },
-                                    child: Text('View More')),
+                                    child: const Text('View More')),
                               ),
                             ),
                           ],
@@ -383,7 +388,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   )
-                : Center(
+                : const Center(
                     child: CircularProgressIndicator(),
                   ),
             Align(
@@ -392,12 +397,6 @@ class _HomePageState extends State<HomePage> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  child: Text(
-                    'Add Product',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
                   minWidth: 250,
                   color: Colors.teal,
                   onPressed: () {
@@ -405,36 +404,36 @@ class _HomePageState extends State<HomePage> {
                         context: context,
                         builder: ((context) {
                           return AlertDialog(
-                            title: Text('Enter Product Description'),
+                            title: const Text('Enter Product Description'),
                             content: Column(
                               children: [
                                 TextFormField(
-                                  onChanged: (_input) {
-                                    productName = _input;
+                                  onChanged: (input) {
+                                    productName = input;
                                   },
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                       label: Text('Product Name')),
                                 ),
                                 TextFormField(
-                                  onChanged: (_input) {
-                                    productDescription = _input;
+                                  onChanged: (input) {
+                                    productDescription = input;
                                   },
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                       label: Text('Product Description')),
                                 ),
                                 TextFormField(
-                                  onChanged: (_input) {
-                                    productPrice = _input;
+                                  onChanged: (input) {
+                                    productPrice = input;
                                   },
-                                  decoration:
-                                      InputDecoration(label: Text('Price')),
+                                  decoration: const InputDecoration(
+                                      label: Text('Price')),
                                 ),
                                 TextFormField(
-                                  onChanged: (_input) {
-                                    imageURL = _input;
+                                  onChanged: (input) {
+                                    imageURL = input;
                                   },
-                                  decoration:
-                                      InputDecoration(label: Text('Image URL')),
+                                  decoration: const InputDecoration(
+                                      label: Text('Image URL')),
                                 ),
                               ],
                             ),
@@ -447,17 +446,25 @@ class _HomePageState extends State<HomePage> {
                                       productDescription,
                                       int.parse(productPrice),
                                       true);
-                                  await Future.delayed(Duration(seconds: 5));
+                                  await Future.delayed(
+                                      const Duration(seconds: 5));
                                   Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(
-                                          builder: (context) => HomePage()));
+                                          builder: (context) =>
+                                              const HomePage()));
                                 },
-                                child: Text('Add Product'),
+                                child: const Text('Add Product'),
                               ),
                             ],
                           );
                         }));
-                  }),
+                  },
+                  child: const Text(
+                    'Add Product',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  )),
             ),
           ],
         ),
