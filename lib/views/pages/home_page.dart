@@ -65,13 +65,13 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: Colors.grey[200],
       appBar: AppBar(
         backgroundColor: Colors.teal,
         title: Text('Products'),
         actions: [
-          TextButton(
-            onPressed: () async {
+          IconButton(
+            onPressed: () {
               try {
                 logout(email, password);
                 Navigator.of(context).pushReplacement(
@@ -80,10 +80,7 @@ class _HomePageState extends State<HomePage> {
                 print(e);
               }
             },
-            child: Text(
-              'Logout',
-              style: TextStyle(color: Colors.white),
-            ),
+            icon: Icon(Icons.logout),
           ),
         ],
       ),
@@ -212,127 +209,174 @@ class _HomePageState extends State<HomePage> {
                                       )
                                     ],
                                   ),
-                                  child: Column(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            10, 10, 10, 0),
-                                        child: Container(
-                                          child: Padding(
-                                            padding: const EdgeInsets.fromLTRB(
-                                                10, 10, 10, 0),
-                                            child: Image.network(
-                                                box.read('jsonData')[i]
-                                                    ['image_link']),
-                                          ),
-                                          height: 300,
-                                          width: 400,
-                                          decoration: BoxDecoration(
-                                            color: Colors.teal,
-                                            borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(10),
-                                              topRight: Radius.circular(10),
+                                  child: Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        30, 10, 30, 10),
+                                    child: Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              10, 10, 10, 0),
+                                          child: Banner(
+                                            color: Colors.blue,
+                                            message: 'HOT SALE',
+                                            location: BannerLocation.topEnd,
+                                            child: Container(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        10, 10, 10, 0),
+                                                child: Image.network(
+                                                    box.read('jsonData')[i]
+                                                        ['image_link']),
+                                              ),
+                                              height: 300,
+                                              width: 400,
+                                              decoration: BoxDecoration(
+                                                gradient:
+                                                    LinearGradient(colors: [
+                                                  Colors.teal[300]!,
+                                                  Colors.teal[200]!,
+                                                  Colors.teal[200]!,
+                                                  Colors.teal[300]!,
+                                                ]),
+                                                borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(10),
+                                                  topRight: Radius.circular(10),
+                                                ),
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                      Container(
-                                        child: Padding(
-                                            padding: const EdgeInsets.fromLTRB(
-                                                10, 10, 0, 10),
-                                            child: ListTile(
-                                              title: Text(
-                                                box.read('jsonData')[i]['name'],
-                                                style: TextStyle(
-                                                  fontSize: 18,
+                                        Container(
+                                          child: Padding(
+                                              padding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      10, 10, 0, 10),
+                                              child: ListTile(
+                                                title: Text(
+                                                  box.read('jsonData')[i]
+                                                      ['name'],
+                                                  style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
                                                 ),
-                                              ),
-                                              trailing: Text(
-                                                box.read('jsonData')[i]
-                                                    ['price'],
-                                                style: TextStyle(
-                                                  fontSize: 15,
+                                                trailing: Container(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20),
+                                                    gradient:
+                                                        LinearGradient(colors: [
+                                                      Colors.teal[500]!,
+                                                      Colors.teal[300]!,
+                                                      Colors.teal[500]!,
+                                                    ]),
+                                                  ),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 10,
+                                                            right: 10,
+                                                            top: 2,
+                                                            bottom: 2),
+                                                    child: Text(
+                                                      box.read('jsonData')[i]
+                                                          ['price'],
+                                                      style: TextStyle(
+                                                        fontSize: 20,
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
-                                            )),
-                                        height: 60,
-                                        width: 370,
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.only(
-                                            bottomLeft: Radius.circular(10),
-                                            bottomRight: Radius.circular(10),
+                                              )),
+                                          height: 60,
+                                          width: 315,
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.only(
+                                              bottomLeft: Radius.circular(10),
+                                              bottomRight: Radius.circular(10),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
-                            ListTile(
-                              leading: TextButton(
-                                  onPressed: () async {
-                                    if (box.read('page') == 1) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                          content: Text(
-                                              'Cannot Procceed. This page is the last page'),
-                                        ),
-                                      );
-                                    } else {
-                                      GetProductList()
-                                          .getMultipleProducts('/products');
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 20, right: 20),
+                              child: ListTile(
+                                leading: TextButton(
+                                    onPressed: () async {
+                                      if (box.read('page') == 1) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                                'Cannot Procceed. This page is the last page'),
+                                          ),
+                                        );
+                                      } else {
+                                        GetProductList()
+                                            .getMultipleProducts('/products');
 
-                                      await Future.delayed(
-                                          Duration(seconds: 5));
+                                        await Future.delayed(
+                                            Duration(seconds: 5));
 
-                                      Navigator.of(context).pushReplacement(
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  HomePage()));
-                                    }
-                                    int page = box.read('page');
+                                        Navigator.of(context).pushReplacement(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    HomePage()));
+                                      }
+                                      int page = box.read('page');
 
-                                    int newPage = 0;
+                                      int newPage = 0;
 
-                                    newPage = page - 1;
+                                      newPage = page - 1;
 
-                                    box.write('page', newPage);
-                                  },
-                                  child: Text('Go Back')),
-                              trailing: TextButton(
-                                  onPressed: () async {
-                                    if (box.read('page') ==
-                                        box.read('pageLength')) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                          content: Text(
-                                              'Cannot Procceed. This page is the last page'),
-                                        ),
-                                      );
-                                    } else {
-                                      GetProductList()
-                                          .getMultipleProducts('/products');
+                                      box.write('page', newPage);
+                                    },
+                                    child: Text('Go Back')),
+                                trailing: TextButton(
+                                    onPressed: () async {
+                                      if (box.read('page') ==
+                                          box.read('pageLength')) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                                'Cannot Procceed. This page is the last page'),
+                                          ),
+                                        );
+                                      } else {
+                                        GetProductList()
+                                            .getMultipleProducts('/products');
 
-                                      await Future.delayed(
-                                          Duration(seconds: 5));
+                                        await Future.delayed(
+                                            Duration(seconds: 5));
 
-                                      Navigator.of(context).pushReplacement(
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  HomePage()));
-                                    }
-                                    int page = box.read('page');
+                                        Navigator.of(context).pushReplacement(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    HomePage()));
+                                      }
+                                      int page = box.read('page');
 
-                                    int newPage = 0;
+                                      int newPage = 0;
 
-                                    newPage = page + 1;
+                                      newPage = page + 1;
 
-                                    box.write('page', newPage);
-                                  },
-                                  child: Text('View More')),
+                                      box.write('page', newPage);
+                                    },
+                                    child: Text('View More')),
+                              ),
                             ),
                           ],
                         ),
@@ -345,6 +389,9 @@ class _HomePageState extends State<HomePage> {
             Align(
               alignment: Alignment.bottomCenter,
               child: MaterialButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
                   child: Text(
                     'Add Product',
                     style: TextStyle(

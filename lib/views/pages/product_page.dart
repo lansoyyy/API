@@ -17,28 +17,44 @@ class _ProductPageState extends State<ProductPage> {
       appBar: AppBar(
         backgroundColor: Colors.teal,
         title: Text('Product Name'),
+        centerTitle: true,
       ),
       body: Center(
         child: Column(
           children: [
-            Image.network(box.read('singleProductData')['image_link']),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Image.network(box.read('singleProductData')['image_link']),
+            ),
             SizedBox(
               height: 20,
             ),
-            ListTile(
-              leading: Text(
-                box.read('singleProductData')['name'],
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+              child: ListTile(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
                 ),
-              ),
-              trailing: Text(
-                box.read('singleProductData')['price'],
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                  color: Colors.green,
+                tileColor: Colors.teal,
+                leading: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Image.network(
+                      box.read('singleProductData')['image_link']),
+                ),
+                title: Text(
+                  box.read('singleProductData')['name'],
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: Colors.white),
+                ),
+                trailing: Text(
+                  box.read('singleProductData')['price'],
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
