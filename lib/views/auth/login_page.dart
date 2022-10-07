@@ -24,106 +24,152 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.teal,
-        title: Text('Login'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(30, 0, 30, 10),
-              child: TextFormField(
-                onChanged: (_input) {
-                  email = _input;
-                },
-                decoration: InputDecoration(label: Text('Email')),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(30, 0, 30, 10),
-              child: TextFormField(
-                onChanged: (_input) {
-                  password = _input;
-                },
-                decoration: InputDecoration(label: Text('Password')),
-              ),
-            ),
-            SizedBox(
-              height: 50,
-            ),
-            ButtonWidget(
-                onPressed: () async {
-                  final box = GetStorage();
-                  var jsonResponse;
-
-                  Map data = {
-                    'email': email,
-                    'password': password,
-                  };
-
-                  String body = json.encode(data);
-                  var url = APIConfig().baseUrl + '/login';
-                  var response = await http.post(
-                    Uri.parse(url),
-                    body: body,
-                    headers: {
-                      "Content-Type": "application/json",
-                      "accept": "application/json",
-                      "Access-Control-Allow-Origin": "*"
-                    },
-                  ).timeout(Duration(seconds: 10));
-
-                  // print(response.body["token"]);
-                  // prefs.setString("token", jsonResponse['response']['token']);
-
-                  print(response.statusCode);
-
-                  if (response.statusCode == 201) {
-                    jsonResponse = json.decode(response.body.toString());
-                    print(
-                        'login access token is -> ${json.decode(response.body)['token']}');
-
-                    // ignore: avoid_print
-                    print('success');
-                  } else {
-                    print('error');
-                  }
-                  box.write('token', json.decode(response.body)['token']);
-
-                  await Future.delayed(Duration(seconds: 1));
-
-                  print(box.read('token'));
-
-                  GetProductList().getPageLength('/products');
-
-                  box.write('page', 1);
-
-                  Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => HomePage()));
-                },
-                text: 'Login'),
-            SizedBox(
-              height: 30,
-            ),
-            Row(
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.grey[200],
+        body: SingleChildScrollView(
+          child: Center(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('No Account?'),
-                TextButton(
-                    onPressed: () async {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (context) => RegisterPage()));
-                    },
-                    child: Text(
-                      'Create Now',
-                      style: TextStyle(color: Colors.teal),
-                    ))
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Image.network(
+                      'https://www.freepnglogos.com/uploads/cake-png/cake-png-cakes-international-bakery-deli-cafe-9.png'),
+                ),
+                Text(
+                  'Cake Parade',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w900,
+                      color: Colors.teal,
+                      fontSize: 28),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(30, 0, 30, 10),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: TextFormField(
+                      onChanged: (_input) {
+                        email = _input;
+                      },
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        label: Text('Email'),
+                        prefixIcon: Icon(
+                          Icons.email,
+                          color: Colors.teal,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(30, 0, 30, 10),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: TextFormField(
+                      onChanged: (_input) {
+                        password = _input;
+                      },
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        label: Text('Password'),
+                        prefixIcon: Icon(
+                          Icons.key,
+                          color: Colors.teal,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                ButtonWidget(
+                  onPressed: () async {
+                    final box = GetStorage();
+                    var jsonResponse;
+
+                    Map data = {
+                      'email': email,
+                      'password': password,
+                    };
+
+                    String body = json.encode(data);
+                    var url = APIConfig().baseUrl + '/login';
+                    var response = await http.post(
+                      Uri.parse(url),
+                      body: body,
+                      headers: {
+                        "Content-Type": "application/json",
+                        "accept": "application/json",
+                        "Access-Control-Allow-Origin": "*"
+                      },
+                    ).timeout(Duration(seconds: 10));
+
+                    // print(response.body["token"]);
+                    // prefs.setString("token", jsonResponse['response']['token']);
+
+                    print(response.statusCode);
+
+                    if (response.statusCode == 201) {
+                      jsonResponse = json.decode(response.body.toString());
+                      print(
+                          'login access token is -> ${json.decode(response.body)['token']}');
+
+                      // ignore: avoid_print
+                      print('success');
+                    } else {
+                      print('error');
+                    }
+                    box.write('token', json.decode(response.body)['token']);
+
+                    await Future.delayed(Duration(seconds: 1));
+
+                    print(box.read('token'));
+
+                    GetProductList().getPageLength('/products');
+
+                    box.write('page', 1);
+
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (context) => HomePage()));
+                  },
+                  text: 'Login',
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'No Account?',
+                      style: TextStyle(fontWeight: FontWeight.w400),
+                    ),
+                    TextButton(
+                        onPressed: () async {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => RegisterPage()));
+                        },
+                        child: Text(
+                          'Create Now',
+                          style: TextStyle(
+                            color: Colors.teal,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ))
+                  ],
+                )
               ],
-            )
-          ],
+            ),
+          ),
         ),
       ),
     );

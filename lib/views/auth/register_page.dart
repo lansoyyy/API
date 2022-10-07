@@ -60,11 +60,15 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
             ),
             MaterialButton(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5),
+              ),
               child: Text(
                 'Register',
                 style: TextStyle(
-                  color: Colors.white,
-                ),
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18),
               ),
               minWidth: 200,
               color: Colors.teal,
