@@ -15,8 +15,8 @@ class _ProductPageState extends State<ProductPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.teal,
-        title: Text('Product Name'),
+        backgroundColor: Colors.pink[200],
+        title: const Text('Product Name'),
         centerTitle: true,
       ),
       body: Center(
@@ -26,7 +26,7 @@ class _ProductPageState extends State<ProductPage> {
               padding: const EdgeInsets.all(20.0),
               child: Image.network(box.read('singleProductData')['image_link']),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Padding(
@@ -35,7 +35,7 @@ class _ProductPageState extends State<ProductPage> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5),
                 ),
-                tileColor: Colors.teal,
+                tileColor: Colors.pink[200],
                 leading: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Image.network(
@@ -43,14 +43,14 @@ class _ProductPageState extends State<ProductPage> {
                 ),
                 title: Text(
                   box.read('singleProductData')['name'],
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
                       color: Colors.white),
                 ),
                 trailing: Text(
                   box.read('singleProductData')['price'],
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
                     color: Colors.white,

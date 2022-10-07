@@ -1,10 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:sample_app/views/auth/login_page.dart';
-import 'package:sample_app/views/pages/home_page.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../services/http/http_post/post_register.dart';
 
@@ -24,61 +19,107 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.teal,
-        title: Text('Register'),
+        backgroundColor: Colors.pink[200],
+        title: const Text('Register'),
         centerTitle: true,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(30, 0, 30, 10),
-              child: TextFormField(
-                onChanged: (_input) {
-                  name = _input;
-                },
-                decoration: InputDecoration(label: Text('Name')),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            children: [
+              Image.network(
+                  'https://cdn.dribbble.com/users/5965492/screenshots/14778540/media/98b8be2196e7b039669f2b027a2e6e97.png'),
+              const SizedBox(
+                height: 20,
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(30, 0, 30, 10),
-              child: TextFormField(
-                onChanged: (_input) {
-                  email = _input;
-                },
-                decoration: InputDecoration(label: Text('Email')),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(30, 0, 30, 50),
-              child: TextFormField(
-                onChanged: (_input) {
-                  password = _input;
-                },
-                decoration: InputDecoration(label: Text('Password')),
-              ),
-            ),
-            MaterialButton(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: Text(
-                'Register',
-                style: TextStyle(
+              Padding(
+                padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+                child: Container(
+                  decoration: BoxDecoration(
                     color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: TextFormField(
+                    onChanged: (input) {
+                      name = input;
+                    },
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      label: const Text('Name'),
+                      prefixIcon: Icon(
+                        Icons.person,
+                        color: Colors.pink[200],
+                      ),
+                    ),
+                  ),
+                ),
               ),
-              minWidth: 200,
-              color: Colors.teal,
-              onPressed: () {
-                register(email, password, name);
-                Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => LoginPage()));
-              },
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: TextFormField(
+                    onChanged: (input) {
+                      email = input;
+                    },
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      label: const Text('Email'),
+                      prefixIcon: Icon(
+                        Icons.email,
+                        color: Colors.pink[200],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(30, 10, 30, 30),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: TextFormField(
+                    obscureText: true,
+                    onChanged: (input) {
+                      password = input;
+                    },
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      label: const Text('Password'),
+                      prefixIcon: Icon(
+                        Icons.key,
+                        color: Colors.pink[200],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              MaterialButton(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(100),
+                ),
+                minWidth: 200,
+                color: Colors.pink[200],
+                onPressed: () {
+                  register(email, password, name);
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => LoginPage()));
+                },
+                child: const Text(
+                  'Register',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

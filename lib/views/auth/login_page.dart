@@ -6,10 +6,8 @@ import 'package:sample_app/views/auth/register_page.dart';
 import 'package:sample_app/views/pages/home_page.dart';
 import 'package:sample_app/views/widgets/button_widget.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get_storage/get_storage.dart';
 import '../../services/config/api_config.dart';
-import '../../services/http/http_post/post_login.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -32,20 +30,10 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Image.network(
-                      'https://www.freepnglogos.com/uploads/cake-png/cake-png-cakes-international-bakery-deli-cafe-9.png'),
-                ),
-                Text(
-                  'Cake Parade',
-                  style: TextStyle(
-                      fontWeight: FontWeight.w900,
-                      color: Colors.teal,
-                      fontSize: 28),
-                ),
-                SizedBox(
-                  height: 10,
+                Image.network(
+                    'https://cdn.dribbble.com/users/5965492/screenshots/14778540/media/98b8be2196e7b039669f2b027a2e6e97.png'),
+                const SizedBox(
+                  height: 20,
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(30, 0, 30, 10),
@@ -55,15 +43,15 @@ class _LoginPageState extends State<LoginPage> {
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: TextFormField(
-                      onChanged: (_input) {
-                        email = _input;
+                      onChanged: (input) {
+                        email = input;
                       },
                       decoration: InputDecoration(
                         border: InputBorder.none,
-                        label: Text('Email'),
+                        label: const Text('Email'),
                         prefixIcon: Icon(
                           Icons.email,
-                          color: Colors.teal,
+                          color: Colors.pink[200],
                         ),
                       ),
                     ),
@@ -77,21 +65,21 @@ class _LoginPageState extends State<LoginPage> {
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: TextFormField(
-                      onChanged: (_input) {
-                        password = _input;
+                      onChanged: (input) {
+                        password = input;
                       },
                       decoration: InputDecoration(
                         border: InputBorder.none,
-                        label: Text('Password'),
+                        label: const Text('Password'),
                         prefixIcon: Icon(
                           Icons.key,
-                          color: Colors.teal,
+                          color: Colors.pink[200],
                         ),
                       ),
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 30,
                 ),
                 ButtonWidget(
@@ -105,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
                     };
 
                     String body = json.encode(data);
-                    var url = APIConfig().baseUrl + '/login';
+                    var url = '${APIConfig().baseUrl}/login';
                     var response = await http.post(
                       Uri.parse(url),
                       body: body,
@@ -114,7 +102,7 @@ class _LoginPageState extends State<LoginPage> {
                         "accept": "application/json",
                         "Access-Control-Allow-Origin": "*"
                       },
-                    ).timeout(Duration(seconds: 10));
+                    ).timeout(const Duration(seconds: 10));
 
                     // print(response.body["token"]);
                     // prefs.setString("token", jsonResponse['response']['token']);
@@ -133,7 +121,7 @@ class _LoginPageState extends State<LoginPage> {
                     }
                     box.write('token', json.decode(response.body)['token']);
 
-                    await Future.delayed(Duration(seconds: 1));
+                    await Future.delayed(const Duration(seconds: 1));
 
                     print(box.read('token'));
 
@@ -141,15 +129,15 @@ class _LoginPageState extends State<LoginPage> {
 
                     box.write('page', 1);
 
-                    Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (context) => HomePage()));
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => const HomePage()));
                   },
                   text: 'Login',
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
+                    const Text(
                       'No Account?',
                       style: TextStyle(fontWeight: FontWeight.w400),
                     ),
@@ -161,7 +149,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: Text(
                           'Create Now',
                           style: TextStyle(
-                            color: Colors.teal,
+                            color: Colors.pink[200],
                             fontWeight: FontWeight.bold,
                           ),
                         ))

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:http/http.dart';
 import 'package:sample_app/services/http/http_delete/delete_products.dart';
 import 'package:sample_app/services/http/http_get/get_single_product.dart';
 
@@ -10,7 +9,6 @@ import 'package:sample_app/views/auth/login_page.dart';
 import 'package:sample_app/models/products.dart';
 import "package:get_storage/get_storage.dart";
 import 'package:sample_app/views/pages/product_page.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../services/http/http_get/get_product_list.dart';
 import '../../services/http/http_post/post_logout.dart';
@@ -67,7 +65,8 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
-        backgroundColor: Colors.teal,
+        centerTitle: true,
+        backgroundColor: Colors.pink[200],
         title: const Text('Products'),
         actions: [
           IconButton(
@@ -184,7 +183,7 @@ class _HomePageState extends State<HomePage> {
                                                 );
                                               }));
                                         },
-                                        backgroundColor: Colors.blue,
+                                        backgroundColor: Colors.pink,
                                         foregroundColor: Colors.white,
                                         icon: Icons.delete,
                                         label: 'Update',
@@ -231,10 +230,10 @@ class _HomePageState extends State<HomePage> {
                                               decoration: BoxDecoration(
                                                 gradient:
                                                     LinearGradient(colors: [
-                                                  Colors.teal[300]!,
-                                                  Colors.teal[200]!,
-                                                  Colors.teal[200]!,
-                                                  Colors.teal[300]!,
+                                                  Colors.pink[300]!,
+                                                  Colors.pink[200]!,
+                                                  Colors.pink[200]!,
+                                                  Colors.pink[300]!,
                                                 ]),
                                                 borderRadius:
                                                     const BorderRadius.only(
@@ -283,9 +282,9 @@ class _HomePageState extends State<HomePage> {
                                                             20),
                                                     gradient:
                                                         LinearGradient(colors: [
-                                                      Colors.teal[500]!,
-                                                      Colors.teal[300]!,
-                                                      Colors.teal[500]!,
+                                                      Colors.pink[500]!,
+                                                      Colors.pink[300]!,
+                                                      Colors.pink[500]!,
                                                     ]),
                                                   ),
                                                   child: Padding(
@@ -320,12 +319,12 @@ class _HomePageState extends State<HomePage> {
                               child: ListTile(
                                 leading: TextButton(
                                     onPressed: () async {
-                                      if (box.read('page') == 1) {
+                                      if (box.read('page') <= 1) {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
                                           const SnackBar(
                                             content: Text(
-                                                'Cannot Procceed. This page is the last page'),
+                                                'Cannot Procceed. This page is the first page'),
                                           ),
                                         );
                                       } else {
@@ -335,23 +334,26 @@ class _HomePageState extends State<HomePage> {
                                         await Future.delayed(
                                             const Duration(seconds: 5));
 
+                                        int page = box.read('page');
+
+                                        int newPage = 0;
+
+                                        newPage = page - 1;
+
+                                        box.write('page', newPage);
+
                                         Navigator.of(context).pushReplacement(
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     const HomePage()));
                                       }
-                                      int page = box.read('page');
-
-                                      int newPage = 0;
-
-                                      newPage = page - 1;
-
-                                      box.write('page', newPage);
                                     },
-                                    child: const Text('Go Back')),
+                                    child: Text('Go Back',
+                                        style: TextStyle(
+                                            color: Colors.pink[200]))),
                                 trailing: TextButton(
                                     onPressed: () async {
-                                      if (box.read('page') ==
+                                      if (box.read('page') >=
                                           box.read('pageLength')) {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
@@ -367,20 +369,24 @@ class _HomePageState extends State<HomePage> {
                                         await Future.delayed(
                                             const Duration(seconds: 5));
 
+                                        int page = box.read('page');
+
+                                        int newPage = 0;
+
+                                        newPage = page + 1;
+
+                                        box.write('page', newPage);
+
                                         Navigator.of(context).pushReplacement(
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     const HomePage()));
                                       }
-                                      int page = box.read('page');
-
-                                      int newPage = 0;
-
-                                      newPage = page + 1;
-
-                                      box.write('page', newPage);
                                     },
-                                    child: const Text('View More')),
+                                    child: Text(
+                                      'View More',
+                                      style: TextStyle(color: Colors.pink[200]),
+                                    )),
                               ),
                             ),
                           ],
@@ -398,7 +404,7 @@ class _HomePageState extends State<HomePage> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   minWidth: 250,
-                  color: Colors.teal,
+                  color: Colors.pink[200],
                   onPressed: () {
                     showDialog(
                         context: context,
@@ -439,6 +445,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                             actions: [
                               MaterialButton(
+                                color: Colors.pink[200],
                                 onPressed: () async {
                                   addProduct(
                                       productName,

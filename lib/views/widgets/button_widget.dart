@@ -14,15 +14,15 @@ class ButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialButton(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5),
-        ),
-        child: Text(
-          text,
-          style: TextStyle(
-              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+          borderRadius: BorderRadius.circular(100),
         ),
         minWidth: 250,
-        color: Colors.teal,
-        onPressed: onPressed);
+        color: Colors.pink[200],
+        onPressed: onPressed,
+        child: Text(
+          text,
+          style: const TextStyle(
+              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+        ));
   }
 }
