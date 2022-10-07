@@ -45,6 +45,8 @@ class _HomePageState extends State<HomePage> {
 
   List<ProductModel?> products = [];
 
+  final bool _selected = false;
+
   getProductData() async {
     products = (await GetProductList().getMultipleProducts('/products'))
         as List<ProductModel?>;
@@ -59,8 +61,6 @@ class _HomePageState extends State<HomePage> {
 
     getProductData();
   }
-
-  final bool _selected = false;
 
   @override
   Widget build(BuildContext context) {
@@ -121,8 +121,7 @@ class _HomePageState extends State<HomePage> {
                                   print(
                                       box.read('jsonData')[i]['id'].toString());
                                   Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) =>
-                                          const ProductPage()));
+                                      builder: (context) => ProductPage()));
                                 },
                                 child: Slidable(
                                   startActionPane: ActionPane(

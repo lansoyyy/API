@@ -1,14 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 
-class ProductPage extends StatefulWidget {
-  const ProductPage({super.key});
-
-  @override
-  State<ProductPage> createState() => _ProductPageState();
-}
-
-class _ProductPageState extends State<ProductPage> {
+class ProductPage extends StatelessWidget {
   final box = GetStorage();
 
   @override
