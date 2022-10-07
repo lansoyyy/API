@@ -72,15 +72,13 @@ class _HomePageState extends State<HomePage> {
         actions: [
           TextButton(
             onPressed: () async {
-              print(box.read('pageLength'));
-              print(box.read('page'));
-              // try {
-              //   logout(email, password);
-              //   Navigator.of(context).pushReplacement(
-              //       MaterialPageRoute(builder: (context) => LoginPage()));
-              // } catch (e) {
-              //   print(e);
-              // }
+              try {
+                logout(email, password);
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => LoginPage()));
+              } catch (e) {
+                print(e);
+              }
             },
             child: Text(
               'Logout',
