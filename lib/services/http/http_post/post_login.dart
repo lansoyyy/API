@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import "package:get_storage/get_storage.dart";
 import '../../config/api_config.dart';
 
-Future<void> LoginOfuser(email, password) async {
+Future<void> login(email, password) async {
   final box = GetStorage();
   var jsonResponse;
 
@@ -13,7 +13,7 @@ Future<void> LoginOfuser(email, password) async {
   };
 
   String body = json.encode(data);
-  var url = APIConfig().baseUrl + '/login';
+  var url = '${APIConfig().baseUrl}/login';
   var response = await http.post(
     Uri.parse(url),
     body: body,
@@ -22,7 +22,7 @@ Future<void> LoginOfuser(email, password) async {
       "accept": "application/json",
       "Access-Control-Allow-Origin": "*"
     },
-  ).timeout(Duration(seconds: 10));
+  ).timeout(const Duration(seconds: 10));
 
   // print(response.body["token"]);
   // prefs.setString("token", jsonResponse['response']['token']);

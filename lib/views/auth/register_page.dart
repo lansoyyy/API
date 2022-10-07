@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sample_app/views/auth/login_page.dart';
+import 'package:sample_app/views/widgets/button_widget.dart';
 
 import '../../services/http/http_post/post_register.dart';
 
@@ -99,25 +100,13 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
               ),
-              MaterialButton(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(100),
-                ),
-                minWidth: 200,
-                color: Colors.pink[200],
-                onPressed: () {
-                  register(email, password, name);
-                  Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => LoginPage()));
-                },
-                child: const Text(
-                  'Register',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18),
-                ),
-              ),
+              ButtonWidget(
+                  onPressed: () {
+                    register(email, password, name);
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (context) => LoginPage()));
+                  },
+                  text: 'Register'),
             ],
           ),
         ),

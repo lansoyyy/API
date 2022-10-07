@@ -9,9 +9,11 @@ import 'package:sample_app/views/auth/login_page.dart';
 import 'package:sample_app/models/products.dart';
 import "package:get_storage/get_storage.dart";
 import 'package:sample_app/views/pages/product_page.dart';
+import 'package:sample_app/views/widgets/button_widget.dart';
 
 import '../../services/http/http_get/get_product_list.dart';
 import '../../services/http/http_post/post_logout.dart';
+import '../widgets/text_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -67,7 +69,11 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.pink[200],
-        title: const Text('Products'),
+        title: TextWidget(
+            text: 'Products',
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.bold),
         actions: [
           IconButton(
             onPressed: () {
@@ -137,48 +143,46 @@ class _HomePageState extends State<HomePage> {
                                                           newProductName =
                                                               input;
                                                         },
-                                                        decoration:
-                                                            const InputDecoration(
-                                                                label: Text(
-                                                                    'New Product Name')),
+                                                        decoration: InputDecoration(
+                                                            hintText: box.read(
+                                                                    'jsonData')[
+                                                                i]['name']),
                                                       ),
                                                       TextFormField(
                                                         onChanged: (input) {
                                                           newProductPrice =
                                                               input;
                                                         },
-                                                        decoration:
-                                                            const InputDecoration(
-                                                                label: Text(
-                                                                    'New Product Price')),
+                                                        decoration: InputDecoration(
+                                                            hintText: box.read(
+                                                                    'jsonData')[
+                                                                i]['price']),
                                                       ),
                                                     ],
                                                   ),
                                                   actions: [
-                                                    MaterialButton(
-                                                      onPressed: () async {
-                                                        putProduct(
-                                                            box.read('jsonData')[
-                                                                i]['id'],
-                                                            newProductName,
-                                                            newProductPrice,
-                                                            box.read('jsonData')[
-                                                                    i]
-                                                                ['image_link']);
+                                                    ButtonWidget(
+                                                        onPressed: () async {
+                                                          putProduct(
+                                                              box.read('jsonData')[
+                                                                  i]['id'],
+                                                              newProductName,
+                                                              newProductPrice,
+                                                              box.read('jsonData')[
+                                                                      i][
+                                                                  'image_link']);
 
-                                                        await Future.delayed(
-                                                            const Duration(
-                                                                seconds: 5));
-                                                        Navigator.of(context)
-                                                            .pushReplacement(
-                                                                MaterialPageRoute(
-                                                                    builder:
-                                                                        (context) =>
-                                                                            const HomePage()));
-                                                      },
-                                                      child: const Text(
-                                                          'Add Product'),
-                                                    ),
+                                                          await Future.delayed(
+                                                              const Duration(
+                                                                  seconds: 5));
+                                                          Navigator.of(context)
+                                                              .pushReplacement(
+                                                                  MaterialPageRoute(
+                                                                      builder:
+                                                                          (context) =>
+                                                                              const HomePage()));
+                                                        },
+                                                        text: 'Add Product'),
                                                   ],
                                                 );
                                               }));
@@ -267,14 +271,14 @@ class _HomePageState extends State<HomePage> {
                                                   const EdgeInsets.fromLTRB(
                                                       10, 10, 0, 10),
                                               child: ListTile(
-                                                title: Text(
-                                                  box.read('jsonData')[i]
-                                                      ['name'],
-                                                  style: const TextStyle(
+                                                title: TextWidget(
+                                                    text:
+                                                        box.read('jsonData')[i]
+                                                            ['name'],
+                                                    color: Colors.black,
                                                     fontSize: 18,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
+                                                    fontWeight:
+                                                        FontWeight.bold),
                                                 trailing: Container(
                                                   decoration: BoxDecoration(
                                                     borderRadius:
@@ -294,16 +298,14 @@ class _HomePageState extends State<HomePage> {
                                                             right: 10,
                                                             top: 2,
                                                             bottom: 2),
-                                                    child: Text(
-                                                      box.read('jsonData')[i]
-                                                          ['price'],
-                                                      style: const TextStyle(
-                                                        fontSize: 20,
+                                                    child: TextWidget(
+                                                        text: box.read(
+                                                                'jsonData')[i]
+                                                            ['price'],
                                                         color: Colors.white,
+                                                        fontSize: 22,
                                                         fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ),
+                                                            FontWeight.bold),
                                                   ),
                                                 ),
                                               )),
@@ -317,7 +319,7 @@ class _HomePageState extends State<HomePage> {
                               padding:
                                   const EdgeInsets.only(left: 20, right: 20),
                               child: ListTile(
-                                leading: TextButton(
+                                  leading: TextButton(
                                     onPressed: () async {
                                       if (box.read('page') <= 1) {
                                         ScaffoldMessenger.of(context)
@@ -348,10 +350,13 @@ class _HomePageState extends State<HomePage> {
                                                     const HomePage()));
                                       }
                                     },
-                                    child: Text('Go Back',
-                                        style: TextStyle(
-                                            color: Colors.pink[200]))),
-                                trailing: TextButton(
+                                    child: TextWidget(
+                                        text: 'Go back',
+                                        color: Colors.pink[200]!,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  trailing: TextButton(
                                     onPressed: () async {
                                       if (box.read('page') >=
                                           box.read('pageLength')) {
@@ -383,11 +388,12 @@ class _HomePageState extends State<HomePage> {
                                                     const HomePage()));
                                       }
                                     },
-                                    child: Text(
-                                      'View More',
-                                      style: TextStyle(color: Colors.pink[200]),
-                                    )),
-                              ),
+                                    child: TextWidget(
+                                        text: 'View more',
+                                        color: Colors.pink[200]!,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold),
+                                  )),
                             ),
                           ],
                         ),
@@ -400,52 +406,51 @@ class _HomePageState extends State<HomePage> {
             Align(
               alignment: Alignment.bottomCenter,
               child: MaterialButton(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  minWidth: 250,
-                  color: Colors.pink[200],
-                  onPressed: () {
-                    showDialog(
-                        context: context,
-                        builder: ((context) {
-                          return AlertDialog(
-                            title: const Text('Enter Product Description'),
-                            content: Column(
-                              children: [
-                                TextFormField(
-                                  onChanged: (input) {
-                                    productName = input;
-                                  },
-                                  decoration: const InputDecoration(
-                                      label: Text('Product Name')),
-                                ),
-                                TextFormField(
-                                  onChanged: (input) {
-                                    productDescription = input;
-                                  },
-                                  decoration: const InputDecoration(
-                                      label: Text('Product Description')),
-                                ),
-                                TextFormField(
-                                  onChanged: (input) {
-                                    productPrice = input;
-                                  },
-                                  decoration: const InputDecoration(
-                                      label: Text('Price')),
-                                ),
-                                TextFormField(
-                                  onChanged: (input) {
-                                    imageURL = input;
-                                  },
-                                  decoration: const InputDecoration(
-                                      label: Text('Image URL')),
-                                ),
-                              ],
-                            ),
-                            actions: [
-                              MaterialButton(
-                                color: Colors.pink[200],
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                minWidth: 250,
+                color: Colors.pink[200],
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: ((context) {
+                        return AlertDialog(
+                          title: const Text('Enter Product Description'),
+                          content: Column(
+                            children: [
+                              TextFormField(
+                                onChanged: (input) {
+                                  productName = input;
+                                },
+                                decoration: const InputDecoration(
+                                    label: Text('Product Name')),
+                              ),
+                              TextFormField(
+                                onChanged: (input) {
+                                  productDescription = input;
+                                },
+                                decoration: const InputDecoration(
+                                    label: Text('Product Description')),
+                              ),
+                              TextFormField(
+                                onChanged: (input) {
+                                  productPrice = input;
+                                },
+                                decoration:
+                                    const InputDecoration(label: Text('Price')),
+                              ),
+                              TextFormField(
+                                onChanged: (input) {
+                                  imageURL = input;
+                                },
+                                decoration: const InputDecoration(
+                                    label: Text('Image URL')),
+                              ),
+                            ],
+                          ),
+                          actions: [
+                            ButtonWidget(
                                 onPressed: () async {
                                   addProduct(
                                       productName,
@@ -460,18 +465,17 @@ class _HomePageState extends State<HomePage> {
                                           builder: (context) =>
                                               const HomePage()));
                                 },
-                                child: const Text('Add Product'),
-                              ),
-                            ],
-                          );
-                        }));
-                  },
-                  child: const Text(
-                    'Add Product',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  )),
+                                text: 'Add Product')
+                          ],
+                        );
+                      }));
+                },
+                child: TextWidget(
+                    text: 'Add Product',
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           ],
         ),
