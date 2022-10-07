@@ -7,9 +7,8 @@ import 'package:get_storage/get_storage.dart';
 
 class GetProductList {
   final box = GetStorage();
-
   Future<ProductModel> getMultipleProducts(String api) async {
-    var uri = Uri.parse(APIConfig().baseUrl + api + '?page=5');
+    var uri = Uri.parse('${APIConfig().baseUrl}$api?page=${box.read('page')}');
 
     final headers = await http.get(
       uri,
@@ -20,19 +19,19 @@ class GetProductList {
         "Authorization": "Bearer ${box.read('token')}"
       },
     );
-    print('Token : ${box.read('token')}');
-
-    print(headers.body);
 
     var jsonResponse = jsonDecode(headers.body.toString());
 
     box.write("jsonData", jsonResponse['data']);
 
-    print(jsonResponse['data'].toString());
+    print(box.read('page'));
+    print("Page length " + box.read('pageLength'));
 
-    for (int i = 0; i < jsonResponse['data'].length; i++) {
-      print(jsonResponse['data'][i]['name']);
-    }
+    // if (jsonResponse['data'].toString() == "[]") {
+    //   print('page is empty');
+    // } else if (jsonResponse['data'].toString() != "[]") {
+    //   print('page has values');
+    // }
 
     var json = headers.body;
 
@@ -42,5 +41,29 @@ class GetProductList {
       print('error');
     }
     return productModelFromJson(json);
+  }
+
+  Future getPageLength(String api) async {
+    var uri = Uri.parse('${APIConfig().baseUrl}$api');
+
+    final headers = await http.get(
+      uri,
+      headers: {
+        "Content-Type": "application/json",
+        "accept": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Authorization": "Bearer ${box.read('token')}"
+      },
+    );
+
+    var jsonResponse = jsonDecode(headers.body.toString());
+
+    box.write("pageLength", jsonResponse['last_page']);
+
+    // if (jsonResponse['data'].toString() == "[]") {
+    //   print('page is empty');
+    // } else if (jsonResponse['data'].toString() != "[]") {
+    //   print('page has values');
+    // }
   }
 }

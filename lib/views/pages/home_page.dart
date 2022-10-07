@@ -60,6 +60,8 @@ class _HomePageState extends State<HomePage> {
     getProductData();
   }
 
+  bool _selected = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,13 +72,15 @@ class _HomePageState extends State<HomePage> {
         actions: [
           TextButton(
             onPressed: () async {
-              try {
-                logout(email, password);
-                Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => LoginPage()));
-              } catch (e) {
-                print(e);
-              }
+              print(box.read('pageLength'));
+              print(box.read('page'));
+              // try {
+              //   logout(email, password);
+              //   Navigator.of(context).pushReplacement(
+              //       MaterialPageRoute(builder: (context) => LoginPage()));
+              // } catch (e) {
+              //   print(e);
+              // }
             },
             child: Text(
               'Logout',
@@ -154,7 +158,7 @@ class _HomePageState extends State<HomePage> {
                                                   ),
                                                   actions: [
                                                     MaterialButton(
-                                                      onPressed: () {
+                                                      onPressed: () async {
                                                         putProduct(
                                                             box.read('jsonData')[
                                                                 i]['id'],
@@ -163,6 +167,10 @@ class _HomePageState extends State<HomePage> {
                                                             box.read('jsonData')[
                                                                     i]
                                                                 ['image_link']);
+
+                                                        await Future.delayed(
+                                                            Duration(
+                                                                seconds: 5));
                                                         Navigator.of(context)
                                                             .pushReplacement(
                                                                 MaterialPageRoute(
@@ -188,10 +196,12 @@ class _HomePageState extends State<HomePage> {
                                     motion: const ScrollMotion(),
                                     children: [
                                       SlidableAction(
-                                        onPressed: (context) {
+                                        onPressed: (context) async {
                                           deleteProduct(
                                               box.read('jsonData')[i]['id']);
 
+                                          await Future.delayed(
+                                              Duration(seconds: 5));
                                           Navigator.of(context).pushReplacement(
                                               MaterialPageRoute(
                                                   builder: (context) =>
@@ -261,6 +271,71 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 ),
                               ),
+                            ListTile(
+                              leading: TextButton(
+                                  onPressed: () async {
+                                    if (box.read('page') == 1) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                              'Cannot Procceed. This page is the last page'),
+                                        ),
+                                      );
+                                    } else {
+                                      GetProductList()
+                                          .getMultipleProducts('/products');
+
+                                      await Future.delayed(
+                                          Duration(seconds: 5));
+
+                                      Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  HomePage()));
+                                    }
+                                    int page = box.read('page');
+
+                                    int newPage = 0;
+
+                                    newPage = page - 1;
+
+                                    box.write('page', newPage);
+                                  },
+                                  child: Text('Go Back')),
+                              trailing: TextButton(
+                                  onPressed: () async {
+                                    if (box.read('page') ==
+                                        box.read('pageLength')) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                              'Cannot Procceed. This page is the last page'),
+                                        ),
+                                      );
+                                    } else {
+                                      GetProductList()
+                                          .getMultipleProducts('/products');
+
+                                      await Future.delayed(
+                                          Duration(seconds: 5));
+
+                                      Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  HomePage()));
+                                    }
+                                    int page = box.read('page');
+
+                                    int newPage = 0;
+
+                                    newPage = page + 1;
+
+                                    box.write('page', newPage);
+                                  },
+                                  child: Text('View More')),
+                            ),
                           ],
                         ),
                       ),
@@ -320,14 +395,17 @@ class _HomePageState extends State<HomePage> {
                             ),
                             actions: [
                               MaterialButton(
-                                onPressed: () {
+                                onPressed: () async {
                                   addProduct(
                                       productName,
                                       imageURL,
                                       productDescription,
                                       int.parse(productPrice),
                                       true);
-                                  Navigator.of(context).pop();
+                                  await Future.delayed(Duration(seconds: 5));
+                                  Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                          builder: (context) => HomePage()));
                                 },
                                 child: Text('Add Product'),
                               ),

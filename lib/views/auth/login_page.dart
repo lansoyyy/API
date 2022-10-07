@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:sample_app/services/http/http_get/get_product_list.dart';
 import 'package:sample_app/views/auth/register_page.dart';
 import 'package:sample_app/views/pages/home_page.dart';
 import 'package:sample_app/views/widgets/button_widget.dart';
@@ -95,6 +96,10 @@ class _LoginPageState extends State<LoginPage> {
                   await Future.delayed(Duration(seconds: 1));
 
                   print(box.read('token'));
+
+                  GetProductList().getPageLength('/products');
+
+                  box.write('page', 1);
 
                   Navigator.of(context).pushReplacement(
                       MaterialPageRoute(builder: (context) => HomePage()));
