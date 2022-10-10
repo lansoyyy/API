@@ -6,8 +6,6 @@ class TextFormFieldWidget extends StatelessWidget {
 
   TextFormFieldWidget({required this.inputController});
 
-  void onChanged(String) {}
-
   @override
   Widget build(BuildContext context) {
     return TextFormField(
