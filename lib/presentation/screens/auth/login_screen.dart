@@ -7,7 +7,8 @@ import 'package:sample_app/presentation/widgets/button_widget.dart';
 import 'package:http/http.dart' as http;
 import 'package:get_storage/get_storage.dart';
 import 'package:sample_app/presentation/widgets/text_widget.dart';
-import '../../data/services/config/api_config.dart';
+import 'package:sample_app/presentation/widgets/textformfield_widget.dart';
+import '../../../data/services/config/api_config.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -16,11 +17,16 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final box = GetStorage();
-  late String email;
 
-  late String password;
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
-  late bool _obscure = true;
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,78 +45,15 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(
                 height: 20,
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(30, 0, 30, 10),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: TextFormField(
-                    onChanged: (input) {
-                      email = input;
-                    },
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      label: TextWidget(
-                          text: 'Email',
-                          color: Colors.grey,
-                          fontSize: 14,
-                          fontWeight: FontWeight.normal),
-                      prefixIcon: Icon(
-                        Icons.email,
-                        color: Colors.pink[200],
-                      ),
-                      suffix: Padding(
-                        padding: const EdgeInsets.only(right: 10),
-                        child: TextWidget(
-                            text: '@gmail.com',
-                            color: Colors.grey,
-                            fontSize: 14,
-                            fontWeight: FontWeight.normal),
-                      ),
-                    ),
-                  ),
-                ),
+              TextFormFieldWidget(
+                inputController: _emailController,
+                label: 'Email',
+                prefixIcon: Icons.email,
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(30, 0, 30, 10),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: TextFormField(
-                    obscureText: _obscure,
-                    onChanged: (input) {
-                      password = input;
-                    },
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      label: TextWidget(
-                          text: 'Password',
-                          color: Colors.grey,
-                          fontSize: 14,
-                          fontWeight: FontWeight.normal),
-                      prefixIcon: Icon(
-                        Icons.key,
-                        color: Colors.pink[200],
-                      ),
-                      suffixIcon: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            _obscure = !_obscure;
-                          });
-                        },
-                        icon: Icon(
-                          Icons.remove_red_eye_rounded,
-                          color: Colors.pink[200],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              TextFormFieldWidget(
+                  inputController: _passwordController,
+                  label: 'Passowrd',
+                  prefixIcon: Icons.lock),
               const SizedBox(
                 height: 30,
               ),
@@ -120,8 +63,8 @@ class _LoginPageState extends State<LoginPage> {
                   var jsonResponse;
 
                   Map data = {
-                    'email': "$email@gmail.com",
-                    'password': password,
+                    'email': "${_emailController.text}@gmail.com",
+                    'password': _passwordController.text,
                   };
 
                   String body = json.encode(data);
@@ -178,7 +121,7 @@ class _LoginPageState extends State<LoginPage> {
                       fontWeight: FontWeight.normal),
                   TextButton(
                     onPressed: () async {
-                      GoRouter.of(context).go('/signup');
+                      GoRouter.of(context).push('/signup');
                     },
                     child: TextWidget(
                         text: 'Create now',

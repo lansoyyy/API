@@ -4,18 +4,37 @@ import 'package:sample_app/presentation/widgets/text_widget.dart';
 class TextFormFieldWidget extends StatelessWidget {
   late TextEditingController inputController;
 
-  TextFormFieldWidget({required this.inputController});
+  late String label;
+
+  late IconData? prefixIcon;
+
+  TextFormFieldWidget(
+      {required this.inputController, required this.label, this.prefixIcon});
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: inputController,
-      decoration: InputDecoration(
-        label: TextWidget(
-            text: 'Input',
-            color: Colors.black,
-            fontSize: 14,
-            fontWeight: FontWeight.bold),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(30, 0, 30, 10),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(5),
+        ),
+        child: TextFormField(
+          controller: inputController,
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            prefixIcon: Icon(
+              prefixIcon,
+              color: Colors.pink[200],
+            ),
+            label: TextWidget(
+                text: label,
+                color: Colors.black,
+                fontSize: 14,
+                fontWeight: FontWeight.normal),
+          ),
+        ),
       ),
     );
   }
