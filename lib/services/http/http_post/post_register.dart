@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:sample_app/services/config/api_config.dart';
+import 'package:sample_app/utils/config/api_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> register(email, password, name) async {

@@ -33,14 +33,20 @@ class _RegisterPageState extends State<RegisterPage> {
                 height: 20,
               ),
               TextFormFieldWidget(
+                  isEmail: false,
+                  isPassword: false,
                   inputController: _nameController,
                   label: 'Name',
                   prefixIcon: Icons.person),
               TextFormFieldWidget(
+                  isEmail: true,
+                  isPassword: false,
                   inputController: _emailController,
                   label: 'Email',
                   prefixIcon: Icons.email),
               TextFormFieldWidget(
+                  isEmail: false,
+                  isPassword: true,
                   inputController: _passwordController,
                   label: 'Password',
                   prefixIcon: Icons.lock),

@@ -1,24 +1,24 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import "package:get_storage/get_storage.dart";
-import '../../config/api_config.dart';
+import '../../../utils/config/api_config.dart';
 
 Future<void> putProduct(
-    int id, String name, String price, String image_link) async {
+    int id, String name, String price, String imageLink) async {
   final box = GetStorage();
   var jsonResponse;
 
-  var url = APIConfig().baseUrl + '/products/$id';
+  var url = '${APIConfig().baseUrl}/products/$id';
 
-  var _body = {
+  var body = {
     "name": name,
     "price": price,
-    "image_link": image_link,
+    "image_link": imageLink,
     "is_published": true,
   };
   var response = await http.put(
     Uri.parse(url),
-    body: jsonEncode(_body),
+    body: jsonEncode(body),
     headers: {
       "Content-Type": "application/json",
       "accept": "application/json",

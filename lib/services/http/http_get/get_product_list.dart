@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:sample_app/models/products_model.dart';
-import 'package:sample_app/services/config/api_config.dart';
+import 'package:sample_app/utils/config/api_config.dart';
 import 'package:get_storage/get_storage.dart';
 
 class GetProductList {

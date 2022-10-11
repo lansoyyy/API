@@ -2,23 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sample_app/screens/auth/login_screen.dart';
 import 'package:sample_app/screens/auth/register_screen.dart';
+import 'package:sample_app/screens/main_screen.dart';
 
-import 'package:sample_app/screens/products/product_screen.dart';
-import 'package:get_storage/get_storage.dart';
+import 'package:sample_app/screens/products/view_single_product.dart';
 
-import '../screens/home_page.dart';
+import '../screens/home_screen.dart';
 
 GoRouter routes = GoRouter(
   routes: <GoRoute>[
     GoRoute(
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
-        final box = GetStorage();
-        if (box.read("token") == "") {
-          return LoginPage();
-        } else {
-          return LoginPage();
-        }
+        return MainScreen();
+      },
+    ),
+    GoRoute(
+      path: '/login',
+      builder: (BuildContext context, GoRouterState state) {
+        return LoginPage();
       },
     ),
     GoRoute(

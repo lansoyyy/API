@@ -82,11 +82,15 @@ class _ViewProductListState extends State<ViewProductList> {
                                         content: Column(
                                           children: [
                                             TextFormFieldWidget(
+                                                isEmail: false,
+                                                isPassword: false,
                                                 inputController:
                                                     _nameController,
                                                 label: box.read('jsonData')[i]
                                                     ['name']),
                                             TextFormFieldWidget(
+                                                isEmail: false,
+                                                isPassword: false,
                                                 inputController:
                                                     _priceController,
                                                 label: box.read('jsonData')[i]
@@ -313,15 +317,23 @@ class _ViewProductListState extends State<ViewProductList> {
                       content: Column(
                         children: [
                           TextFormFieldWidget(
+                              isEmail: false,
+                              isPassword: false,
                               inputController: _addNameController,
                               label: 'Product Name'),
                           TextFormFieldWidget(
+                              isEmail: false,
+                              isPassword: false,
                               inputController: _addDescriptionController,
                               label: 'Product Description'),
                           TextFormFieldWidget(
+                              isEmail: false,
+                              isPassword: false,
                               inputController: _addPriceController,
                               label: 'Product Price'),
                           TextFormFieldWidget(
+                              isEmail: false,
+                              isPassword: false,
                               inputController: _addImageUrlController,
                               label: 'Product Image URL'),
                         ],

@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:get_storage/get_storage.dart';
 import 'package:sample_app/widgets/text_widget.dart';
 import 'package:sample_app/widgets/textformfield_widget.dart';
-import '../../services/config/api_config.dart';
+import '../../utils/config/api_config.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -46,11 +46,15 @@ class _LoginPageState extends State<LoginPage> {
                 height: 20,
               ),
               TextFormFieldWidget(
+                isEmail: true,
+                isPassword: false,
                 inputController: _emailController,
                 label: 'Email',
                 prefixIcon: Icons.email,
               ),
               TextFormFieldWidget(
+                  isEmail: false,
+                  isPassword: true,
                   inputController: _passwordController,
                   label: 'Passowrd',
                   prefixIcon: Icons.lock),
@@ -63,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
                   var jsonResponse;
 
                   Map data = {
-                    'email': "${_emailController.text}@gmail.com",
+                    'email': _emailController.text,
                     'password': _passwordController.text,
                   };
 

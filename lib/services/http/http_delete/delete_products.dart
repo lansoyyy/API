@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import "package:get_storage/get_storage.dart";
-import '../../config/api_config.dart';
+import '../../../utils/config/api_config.dart';
 
 Future<void> deleteProduct(int id) async {
   final box = GetStorage();
