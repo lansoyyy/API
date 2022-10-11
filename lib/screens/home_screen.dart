@@ -14,6 +14,7 @@ import 'package:sample_app/widgets/button_widget.dart';
 
 import '../services/http/http_get/get_product_list.dart';
 import '../services/http/http_post/post_logout.dart';
+import '../widgets/dialog_widget.dart';
 import '../widgets/text_widget.dart';
 
 class HomePage extends StatefulWidget {
@@ -440,15 +441,24 @@ class _HomePageState extends State<HomePage> {
                           actions: [
                             ButtonWidget(
                                 onPressed: () async {
-                                  addProduct(
-                                      productName,
-                                      imageURL,
-                                      productDescription,
-                                      int.parse(productPrice),
-                                      true);
-                                  await Future.delayed(
-                                      const Duration(seconds: 5));
-                                  GoRouter.of(context).replace('/home');
+                                  try {
+                                    addProduct(
+                                        productName,
+                                        imageURL,
+                                        productDescription,
+                                        int.parse(productPrice),
+                                        true);
+                                    await Future.delayed(
+                                        const Duration(seconds: 5));
+                                    GoRouter.of(context).replace('/home');
+                                  } catch (e) {
+                                    showDialog(
+                                        context: context,
+                                        builder: ((context) {
+                                          return DialogWidget(
+                                              content: e.toString());
+                                        }));
+                                  }
                                 },
                                 text: 'Add Product')
                           ],

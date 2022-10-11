@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import "package:get_storage/get_storage.dart";
-import '../../../utils/config/api_config.dart';
+import '../../../utils/api_config.dart';
 
 Future<void> putProduct(
     int id, String name, String price, String imageLink) async {

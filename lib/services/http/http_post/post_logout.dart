@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../utils/config/api_config.dart';
+import '../../../utils/api_config.dart';
 
 Future<void> logout(email, password) async {
   var jsonResponse;

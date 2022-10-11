@@ -8,6 +8,7 @@ import '../../services/http/http_get/get_single_product.dart';
 import '../../services/http/http_post/post_product.dart';
 import '../../services/http/http_put/put_product.dart';
 import '../../widgets/button_widget.dart';
+import '../../widgets/dialog_widget.dart';
 import '../../widgets/text_widget.dart';
 import '../../widgets/textformfield_widget.dart';
 import "package:get_storage/get_storage.dart";
@@ -100,18 +101,29 @@ class _ViewProductListState extends State<ViewProductList> {
                                         actions: [
                                           ButtonWidget(
                                               onPressed: () async {
-                                                putProduct(
-                                                    box.read('jsonData')[i]
-                                                        ['id'],
-                                                    _nameController.text,
-                                                    _priceController.text,
-                                                    box.read('jsonData')[i]
-                                                        ['image_link']);
+                                                try {
+                                                  putProduct(
+                                                      box.read('jsonData')[i]
+                                                          ['id'],
+                                                      _nameController.text,
+                                                      _priceController.text,
+                                                      box.read('jsonData')[i]
+                                                          ['image_link']);
 
-                                                await Future.delayed(
-                                                    const Duration(seconds: 5));
-                                                GoRouter.of(context)
-                                                    .go('/home');
+                                                  await Future.delayed(
+                                                      const Duration(
+                                                          seconds: 5));
+                                                  GoRouter.of(context)
+                                                      .go('/home');
+                                                } catch (e) {
+                                                  showDialog(
+                                                      context: context,
+                                                      builder: ((context) {
+                                                        return DialogWidget(
+                                                            content:
+                                                                e.toString());
+                                                      }));
+                                                }
                                               },
                                               text: 'Add Product'),
                                         ],

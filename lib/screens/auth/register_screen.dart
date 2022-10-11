@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sample_app/widgets/button_widget.dart';
+import 'package:sample_app/widgets/dialog_widget.dart';
 import 'package:sample_app/widgets/textformfield_widget.dart';
 
 import '../../services/http/http_post/post_register.dart';
@@ -52,9 +53,17 @@ class _RegisterPageState extends State<RegisterPage> {
                   prefixIcon: Icons.lock),
               ButtonWidget(
                   onPressed: () {
-                    register(_emailController.text, _passwordController.text,
-                        _nameController.text);
-                    GoRouter.of(context).replace('/');
+                    try {
+                      register(_emailController.text, _passwordController.text,
+                          _nameController.text);
+                      GoRouter.of(context).replace('/');
+                    } catch (e) {
+                      showDialog(
+                          context: context,
+                          builder: ((context) {
+                            return DialogWidget(content: e.toString());
+                          }));
+                    }
                   },
                   text: 'Register'),
             ],

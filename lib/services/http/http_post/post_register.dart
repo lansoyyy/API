@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:sample_app/utils/config/api_config.dart';
+import 'package:sample_app/utils/api_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> register(email, password, name) async {
@@ -35,7 +35,7 @@ Future<void> register(email, password, name) async {
 
   if (response.statusCode == 201) {
     jsonResponse = json.decode(response.body.toString());
-    prefs.setString("register_token", json.decode(response.body)['token']);
+    prefs.setString("register_wtoken", json.decode(response.body)['token']);
 
     // ignore: avoid_print
     print('success');
