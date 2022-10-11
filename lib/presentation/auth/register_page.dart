@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sample_app/views/widgets/button_widget.dart';
+import 'package:sample_app/presentation/widgets/button_widget.dart';
 
-import '../../services/http/http_post/post_register.dart';
+import '../../data/services/http/http_post/post_register.dart';
 
 class RegisterPage extends StatefulWidget {
   @override

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sample_app/views/routes/routes.dart';
+import 'package:sample_app/presentation/routes/routes.dart';
 
 void main() {
   runApp(const MyApp());

@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sample_app/services/http/http_delete/delete_products.dart';
-import 'package:sample_app/services/http/http_get/get_single_product.dart';
+import 'package:sample_app/data/services/http/http_delete/delete_products.dart';
+import 'package:sample_app/data/services/http/http_get/get_single_product.dart';
 
-import 'package:sample_app/services/http/http_post/post_product.dart';
-import 'package:sample_app/services/http/http_put/put_product.dart';
-import 'package:sample_app/views/auth/login_page.dart';
-import 'package:sample_app/models/products.dart';
+import 'package:sample_app/data/services/http/http_post/post_product.dart';
+import 'package:sample_app/data/services/http/http_put/put_product.dart';
+import 'package:sample_app/presentation/auth/login_page.dart';
+import 'package:sample_app/data/models/products_model.dart';
 import "package:get_storage/get_storage.dart";
-import 'package:sample_app/views/widgets/button_widget.dart';
+import 'package:sample_app/presentation/widgets/button_widget.dart';
 
-import '../../services/http/http_get/get_product_list.dart';
-import '../../services/http/http_post/post_logout.dart';
+import '../../data/services/http/http_get/get_product_list.dart';
+import '../../data/services/http/http_post/post_logout.dart';
 import '../widgets/text_widget.dart';
 
 class HomePage extends StatefulWidget {

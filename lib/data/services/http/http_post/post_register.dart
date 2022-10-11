@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:sample_app/services/config/api_config.dart';
+import 'package:sample_app/data/services/config/api_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> register(email, password, name) async {
@@ -15,7 +15,7 @@ Future<void> register(email, password, name) async {
   print(data);
 
   String body = json.encode(data);
-  var url = APIConfig().baseUrl + '/register';
+  var url = '${APIConfig().baseUrl}/register';
   var response = await http.post(
     Uri.parse(url),
     body: body,
@@ -24,7 +24,7 @@ Future<void> register(email, password, name) async {
       "accept": "application/json",
       "Access-Control-Allow-Origin": "*"
     },
-  ).timeout(Duration(seconds: 10));
+  ).timeout(const Duration(seconds: 10));
 
   print(response.body);
   // print(response.body["token"]);

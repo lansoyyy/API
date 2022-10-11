@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sample_app/views/widgets/text_widget.dart';
+import 'package:sample_app/presentation/widgets/text_widget.dart';
 
 class TextFormFieldWidget extends StatelessWidget {
   late TextEditingController inputController;
