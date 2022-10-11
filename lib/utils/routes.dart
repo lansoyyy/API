@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sample_app/presentation/screens/auth/login_screen.dart';
-import 'package:sample_app/presentation/screens/auth/register_screen.dart';
-import 'package:sample_app/presentation/screens/home_screen.dart';
-import 'package:sample_app/presentation/screens/products/product_screen.dart';
+import 'package:sample_app/screens/auth/login_screen.dart';
+import 'package:sample_app/screens/auth/register_screen.dart';
+import 'package:sample_app/screens/home_screen.dart';
+import 'package:sample_app/screens/products/product_screen.dart';
 import 'package:get_storage/get_storage.dart';
 
 GoRouter routes = GoRouter(

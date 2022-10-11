@@ -1,28 +1,28 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:sample_app/data/services/config/api_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-Future<void> register(email, password, name) async {
+import '../../config/api_config.dart';
+
+Future<void> logout(email, password) async {
   var jsonResponse;
   SharedPreferences prefs = await SharedPreferences.getInstance();
   Map data = {
     'email': email,
     'password': password,
-    'name': name,
-    'password_confirmation': password,
   };
   print(data);
 
   String body = json.encode(data);
-  var url = '${APIConfig().baseUrl}/register';
+  var url = '${APIConfig().baseUrl}/logout';
   var response = await http.post(
     Uri.parse(url),
     body: body,
     headers: {
       "Content-Type": "application/json",
       "accept": "application/json",
-      "Access-Control-Allow-Origin": "*"
+      "Access-Control-Allow-Origin": "*",
+      "Authorization": "Bearer ${prefs.getString('login_token')!}"
     },
   ).timeout(const Duration(seconds: 10));
 
@@ -35,7 +35,7 @@ Future<void> register(email, password, name) async {
 
   if (response.statusCode == 201) {
     jsonResponse = json.decode(response.body.toString());
-    prefs.setString("register_token", json.decode(response.body)['token']);
+    prefs.setString("logout_token", json.decode(response.body)['token']);
 
     // ignore: avoid_print
     print('success');

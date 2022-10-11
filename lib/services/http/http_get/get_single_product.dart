@@ -7,7 +7,7 @@ Future<void> getSingleProduct(int id) async {
   final box = GetStorage();
   var jsonResponse;
 
-  var url = APIConfig().baseUrl + '/products/$id';
+  var url = '${APIConfig().baseUrl}/products/$id';
   var response = await http.get(
     Uri.parse(url),
     headers: {

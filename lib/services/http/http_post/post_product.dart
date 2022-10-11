@@ -4,8 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import "package:get_storage/get_storage.dart";
 import '../../config/api_config.dart';
 
-Future<void> addProduct(String name, String image_link, String description,
-    int price, bool is_published) async {
+Future<void> addProduct(String name, String imageLink, String description,
+    int price, bool isPublished) async {
   final box = GetStorage();
 
   try {
@@ -13,15 +13,15 @@ Future<void> addProduct(String name, String image_link, String description,
     SharedPreferences prefs = await SharedPreferences.getInstance();
     Map data = {
       "name": name,
-      "image_link": image_link,
+      "image_link": imageLink,
       "description": description,
       "price": price,
-      "is_published": is_published,
+      "is_published": isPublished,
     };
     print(data);
 
     String body = json.encode(data);
-    var url = APIConfig().baseUrl + '/products';
+    var url = '${APIConfig().baseUrl}/products';
     var response = await http.post(
       Uri.parse(url),
       body: body,
@@ -31,7 +31,7 @@ Future<void> addProduct(String name, String image_link, String description,
         "Access-Control-Allow-Origin": "*",
         "Authorization": "Bearer " + box.read("token")
       },
-    ).timeout(Duration(seconds: 10));
+    ).timeout(const Duration(seconds: 10));
 
     print(response.body);
     // print(response.body["token"]);
@@ -52,6 +52,6 @@ Future<void> addProduct(String name, String image_link, String description,
       print('error');
     }
   } catch (e) {
-    print(e.toString() + 'error');
+    print('${e}error');
   }
 }

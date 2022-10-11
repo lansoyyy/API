@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../data/services/http/http_delete/delete_products.dart';
-import '../../../data/services/http/http_get/get_product_list.dart';
-import '../../../data/services/http/http_get/get_single_product.dart';
-import '../../../data/services/http/http_post/post_product.dart';
-import '../../../data/services/http/http_put/put_product.dart';
+import '../../services/http/http_delete/delete_products.dart';
+import '../../services/http/http_get/get_product_list.dart';
+import '../../services/http/http_get/get_single_product.dart';
+import '../../services/http/http_post/post_product.dart';
+import '../../services/http/http_put/put_product.dart';
 import '../../widgets/button_widget.dart';
 import '../../widgets/text_widget.dart';
 import '../../widgets/textformfield_widget.dart';

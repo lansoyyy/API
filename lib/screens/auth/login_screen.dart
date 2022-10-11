@@ -2,13 +2,13 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sample_app/data/services/http/http_get/get_product_list.dart';
-import 'package:sample_app/presentation/widgets/button_widget.dart';
+import 'package:sample_app/services/http/http_get/get_product_list.dart';
+import 'package:sample_app/widgets/button_widget.dart';
 import 'package:http/http.dart' as http;
 import 'package:get_storage/get_storage.dart';
-import 'package:sample_app/presentation/widgets/text_widget.dart';
-import 'package:sample_app/presentation/widgets/textformfield_widget.dart';
-import '../../../data/services/config/api_config.dart';
+import 'package:sample_app/widgets/text_widget.dart';
+import 'package:sample_app/widgets/textformfield_widget.dart';
+import '../../services/config/api_config.dart';
 
 class LoginPage extends StatefulWidget {
   @override
