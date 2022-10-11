@@ -1,9 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sample_app/services/http/http_get/get_product_list.dart';
-import 'package:sample_app/views/auth/register_page.dart';
-import 'package:sample_app/views/pages/home_page.dart';
 import 'package:sample_app/views/widgets/button_widget.dart';
 import 'package:http/http.dart' as http;
 import 'package:get_storage/get_storage.dart';
@@ -162,8 +161,7 @@ class _LoginPageState extends State<LoginPage> {
 
                   box.write('page', 1);
 
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => const HomePage()));
+                  GoRouter.of(context).replace('/home');
                 },
                 text: 'Login',
               ),
@@ -180,8 +178,7 @@ class _LoginPageState extends State<LoginPage> {
                       fontWeight: FontWeight.normal),
                   TextButton(
                     onPressed: () async {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => RegisterPage()));
+                      GoRouter.of(context).go('/signup');
                     },
                     child: TextWidget(
                         text: 'Create now',

@@ -40,6 +40,7 @@ dependencies:
   shared_preferences: ^2.0.15
   get_storage:
   flutter_slidable:
+  go_router: ^5.0.5
 
 dev_dependencies:
   flutter_test:

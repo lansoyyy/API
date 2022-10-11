@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sample_app/views/auth/login_page.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sample_app/views/widgets/button_widget.dart';
 
 import '../../services/http/http_post/post_register.dart';
@@ -103,8 +103,7 @@ class _RegisterPageState extends State<RegisterPage> {
               ButtonWidget(
                   onPressed: () {
                     register(email, password, name);
-                    Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (context) => LoginPage()));
+                    GoRouter.of(context).replace('/');
                   },
                   text: 'Register'),
             ],

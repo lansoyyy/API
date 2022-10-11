@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sample_app/services/http/http_delete/delete_products.dart';
 import 'package:sample_app/services/http/http_get/get_single_product.dart';
 
@@ -8,7 +9,6 @@ import 'package:sample_app/services/http/http_put/put_product.dart';
 import 'package:sample_app/views/auth/login_page.dart';
 import 'package:sample_app/models/products.dart';
 import "package:get_storage/get_storage.dart";
-import 'package:sample_app/views/pages/product_page.dart';
 import 'package:sample_app/views/widgets/button_widget.dart';
 
 import '../../services/http/http_get/get_product_list.dart';
@@ -120,14 +120,15 @@ class _HomePageState extends State<HomePage> {
                                           'singleProductData')["image_link"]);
                                   print(
                                       box.read('jsonData')[i]['id'].toString());
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => ProductPage()));
+                                  GoRouter.of(context).replace('/product');
                                 },
                                 child: Slidable(
+                                  closeOnScroll: true,
                                   startActionPane: ActionPane(
-                                    motion: const ScrollMotion(),
+                                    motion: const BehindMotion(),
                                     children: [
                                       SlidableAction(
+                                        autoClose: true,
                                         onPressed: (context) {
                                           showDialog(
                                               context: context,
@@ -174,19 +175,15 @@ class _HomePageState extends State<HomePage> {
                                                           await Future.delayed(
                                                               const Duration(
                                                                   seconds: 5));
-                                                          Navigator.of(context)
-                                                              .pushReplacement(
-                                                                  MaterialPageRoute(
-                                                                      builder:
-                                                                          (context) =>
-                                                                              const HomePage()));
+                                                          GoRouter.of(context)
+                                                              .go('/home');
                                                         },
                                                         text: 'Add Product'),
                                                   ],
                                                 );
                                               }));
                                         },
-                                        backgroundColor: Colors.pink,
+                                        backgroundColor: Colors.blue,
                                         foregroundColor: Colors.white,
                                         icon: Icons.delete,
                                         label: 'Update',
@@ -203,10 +200,7 @@ class _HomePageState extends State<HomePage> {
 
                                           await Future.delayed(
                                               const Duration(seconds: 5));
-                                          Navigator.of(context).pushReplacement(
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const HomePage()));
+                                          GoRouter.of(context).replace('/home');
                                         },
                                         backgroundColor: Colors.red,
                                         foregroundColor: Colors.white,
@@ -343,10 +337,7 @@ class _HomePageState extends State<HomePage> {
 
                                         box.write('page', newPage);
 
-                                        Navigator.of(context).pushReplacement(
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const HomePage()));
+                                        GoRouter.of(context).replace('/home');
                                       }
                                     },
                                     child: TextWidget(
@@ -381,10 +372,7 @@ class _HomePageState extends State<HomePage> {
 
                                         box.write('page', newPage);
 
-                                        Navigator.of(context).pushReplacement(
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const HomePage()));
+                                        GoRouter.of(context).replace('/home');
                                       }
                                     },
                                     child: TextWidget(
@@ -459,10 +447,7 @@ class _HomePageState extends State<HomePage> {
                                       true);
                                   await Future.delayed(
                                       const Duration(seconds: 5));
-                                  Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const HomePage()));
+                                  GoRouter.of(context).replace('/home');
                                 },
                                 text: 'Add Product')
                           ],
