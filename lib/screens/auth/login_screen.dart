@@ -66,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
                   isEmail: false,
                   isPassword: true,
                   inputController: _passwordController,
-                  label: 'Passowrd',
+                  label: 'Password',
                   prefixIcon: Icons.lock),
               const SizedBox(
                 height: 30,
