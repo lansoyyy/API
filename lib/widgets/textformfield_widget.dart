@@ -36,11 +36,11 @@ class TextFormFieldWidget extends StatelessWidget {
             validator: (value) {
               isEmail
                   ? EmailValidator.validate(value!) == false
-                      ? "Input Proper Email"
+                      ? "Input valid email address"
                       : null
                   : null;
               if (value == null) {
-                return "This field is Required";
+                return "This field is required";
               } else {
                 return 'Enter this field';
               }
