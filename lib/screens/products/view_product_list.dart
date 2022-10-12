@@ -62,6 +62,15 @@ class _ViewProductListState extends State<ViewProductList> {
     getProductData();
   }
 
+  bool isNotHidden = true;
+
+  changeVisibility() async {
+    await Future.delayed(const Duration(seconds: 3));
+    setState(() {
+      isNotHidden = true;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -368,18 +377,24 @@ class _ViewProductListState extends State<ViewProductList> {
                         ],
                       ),
                       actions: [
-                        ButtonWidget(
-                            onPressed: () async {
-                              addProduct(
-                                  _addNameController.text,
-                                  _addImageUrlController.text,
-                                  _addDescriptionController.text,
-                                  int.parse(_addPriceController.text),
-                                  true);
-                              await Future.delayed(const Duration(seconds: 5));
-                              GoRouter.of(context).replace('/home');
-                            },
-                            text: 'Add Product')
+                        Visibility(
+                          visible: isNotHidden,
+                          child: ButtonWidget(
+                              onPressed: () async {
+                                addProduct(
+                                    _addNameController.text,
+                                    _addImageUrlController.text,
+                                    _addDescriptionController.text,
+                                    int.parse(_addPriceController.text),
+                                    true);
+                                setState(() {
+                                  isNotHidden = false;
+                                });
+                                changeVisibility();
+                                GoRouter.of(context).replace('/home');
+                              },
+                              text: 'Add Product'),
+                        )
                       ],
                     );
                   }));

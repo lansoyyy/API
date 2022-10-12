@@ -29,6 +29,15 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
+  bool isNotHidden = true;
+
+  changeVisibility() async {
+    await Future.delayed(const Duration(seconds: 3));
+    setState(() {
+      isNotHidden = true;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,64 +71,72 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(
                 height: 30,
               ),
-              ButtonWidget(
-                onPressed: () async {
-                  try {
-                    final box = GetStorage();
-                    var jsonResponse;
+              Visibility(
+                visible: isNotHidden,
+                child: ButtonWidget(
+                  onPressed: () async {
+                    try {
+                      final box = GetStorage();
+                      var jsonResponse;
 
-                    Map data = {
-                      'email': _emailController.text,
-                      'password': _passwordController.text,
-                    };
+                      Map data = {
+                        'email': _emailController.text,
+                        'password': _passwordController.text,
+                      };
 
-                    String body = json.encode(data);
-                    var url = '${APIConfig().baseUrl}/login';
-                    var response = await http.post(
-                      Uri.parse(url),
-                      body: body,
-                      headers: {
-                        "Content-Type": "application/json",
-                        "accept": "application/json",
-                        "Access-Control-Allow-Origin": "*"
-                      },
-                    ).timeout(const Duration(seconds: 10));
+                      String body = json.encode(data);
+                      var url = '${APIConfig().baseUrl}/login';
+                      var response = await http.post(
+                        Uri.parse(url),
+                        body: body,
+                        headers: {
+                          "Content-Type": "application/json",
+                          "accept": "application/json",
+                          "Access-Control-Allow-Origin": "*"
+                        },
+                      ).timeout(const Duration(seconds: 10));
 
-                    // print(response.body["token"]);
-                    // prefs.setString("token", jsonResponse['response']['token']);
+                      // print(response.body["token"]);
+                      // prefs.setString("token", jsonResponse['response']['token']);
 
-                    print(response.statusCode);
+                      print(response.statusCode);
 
-                    if (response.statusCode == 201) {
-                      jsonResponse = json.decode(response.body.toString());
-                      print(
-                          'login access token is -> ${json.decode(response.body)['token']}');
+                      if (response.statusCode == 201) {
+                        jsonResponse = json.decode(response.body.toString());
+                        print(
+                            'login access token is -> ${json.decode(response.body)['token']}');
 
-                      // ignore: avoid_print
-                      print('success');
-                    } else {
-                      print('error');
+                        // ignore: avoid_print
+                        print('success');
+                      } else {
+                        print('error');
+                      }
+                      box.write('token', json.decode(response.body)['token']);
+
+                      await Future.delayed(const Duration(seconds: 1));
+
+                      print(box.read('token'));
+
+                      GetProductList().getPageLength('/products');
+
+                      box.write('page', 1);
+
+                      GoRouter.of(context).replace('/home');
+                    } catch (e) {
+                      showDialog(
+                          context: context,
+                          builder: ((context) {
+                            return DialogWidget(content: e.toString());
+                          }));
                     }
-                    box.write('token', json.decode(response.body)['token']);
 
-                    await Future.delayed(const Duration(seconds: 1));
-
-                    print(box.read('token'));
-
-                    GetProductList().getPageLength('/products');
-
-                    box.write('page', 1);
-
-                    GoRouter.of(context).replace('/home');
-                  } catch (e) {
-                    showDialog(
-                        context: context,
-                        builder: ((context) {
-                          return DialogWidget(content: e.toString());
-                        }));
-                  }
-                },
-                text: 'Login',
+                    setState(() {
+                      isNotHidden = false;
+                    });
+                    changeVisibility();
+                  },
+                  text: 'Login',
+                ),
               ),
               const SizedBox(
                 height: 80,

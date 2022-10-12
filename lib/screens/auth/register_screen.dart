@@ -16,6 +16,15 @@ class _RegisterPageState extends State<RegisterPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
+  bool isNotHidden = true;
+
+  changeVisibility() async {
+    await Future.delayed(const Duration(seconds: 3));
+    setState(() {
+      isNotHidden = true;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,21 +60,28 @@ class _RegisterPageState extends State<RegisterPage> {
                   inputController: _passwordController,
                   label: 'Password',
                   prefixIcon: Icons.lock),
-              ButtonWidget(
-                  onPressed: () {
-                    try {
-                      register(_emailController.text, _passwordController.text,
-                          _nameController.text);
-                      GoRouter.of(context).replace('/');
-                    } catch (e) {
-                      showDialog(
-                          context: context,
-                          builder: ((context) {
-                            return DialogWidget(content: e.toString());
-                          }));
-                    }
-                  },
-                  text: 'Register'),
+              Visibility(
+                visible: isNotHidden,
+                child: ButtonWidget(
+                    onPressed: () {
+                      try {
+                        register(_emailController.text,
+                            _passwordController.text, _nameController.text);
+                        GoRouter.of(context).replace('/');
+                      } catch (e) {
+                        showDialog(
+                            context: context,
+                            builder: ((context) {
+                              return DialogWidget(content: e.toString());
+                            }));
+                      }
+                      setState(() {
+                        isNotHidden = false;
+                      });
+                      changeVisibility();
+                    },
+                    text: 'Register'),
+              ),
             ],
           ),
         ),
