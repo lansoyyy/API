@@ -8,6 +8,7 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    box.write('page', 1);
     return box.read('token') == "" ? LoginPage() : const HomePage();
   }
 }

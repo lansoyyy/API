@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:get_storage/get_storage.dart';
 import '../../../utils/api_config.dart';
 
 Future<void> logout(email, password) async {
+  final box = GetStorage();
   var jsonResponse;
   SharedPreferences prefs = await SharedPreferences.getInstance();
   Map data = {
@@ -32,6 +33,8 @@ Future<void> logout(email, password) async {
   print('access token is -> ${json.decode(response.body)['token']}');
 
   print(response.statusCode);
+
+  box.write('token', '');
 
   if (response.statusCode == 201) {
     jsonResponse = json.decode(response.body.toString());

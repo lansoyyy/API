@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:sample_app/screens/auth/login_screen.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sample_app/screens/products/view_product_list.dart';
 
 import 'package:sample_app/models/products_model.dart';
 import "package:get_storage/get_storage.dart";
+import 'package:sample_app/widgets/dialog_widget.dart';
 
 import '../services/http/http_get/get_product_list.dart';
 import '../services/http/http_post/post_logout.dart';
@@ -73,10 +74,14 @@ class _HomePageState extends State<HomePage> {
             onPressed: () {
               try {
                 logout(email, password);
-                Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => LoginPage()));
+                box.write('token', '');
+                GoRouter.of(context).replace('/login');
               } catch (e) {
-                print(e);
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return DialogWidget(content: e.toString());
+                    });
               }
             },
             icon: const Icon(Icons.logout),

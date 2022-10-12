@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../models/products_model.dart';
 import '../../services/http/http_delete/delete_products.dart';
 import '../../services/http/http_get/get_product_list.dart';
 import '../../services/http/http_get/get_single_product.dart';
@@ -31,6 +32,10 @@ class _ViewProductListState extends State<ViewProductList> {
   final _addPriceController = TextEditingController();
   final _addImageUrlController = TextEditingController();
 
+  bool hasLoaded = true;
+
+  List<ProductModel?> products = [];
+
   @override
   void dispose() {
     _addDescriptionController.dispose();
@@ -40,6 +45,21 @@ class _ViewProductListState extends State<ViewProductList> {
     _nameController.dispose();
     _priceController.dispose();
     super.dispose();
+  }
+
+  getProductData() async {
+    products = (await GetProductList().getMultipleProducts('/products'))
+        as List<ProductModel?>;
+    setState(() {
+      hasLoaded = true;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    getProductData();
   }
 
   @override
@@ -60,9 +80,6 @@ class _ViewProductListState extends State<ViewProductList> {
 
                         await Future.delayed(const Duration(seconds: 3));
 
-                        print("Product Data" +
-                            box.read('singleProductData')["image_link"]);
-                        print(box.read('jsonData')[i]['id'].toString());
                         GoRouter.of(context).replace('/product');
                       },
                       child: Slidable(
