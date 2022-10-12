@@ -1,15 +1,12 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sample_app/services/http/http_get/get_product_list.dart';
+import 'package:sample_app/services/api_call_handling.dart';
+import 'package:sample_app/services/http/http_post/post_login.dart';
 import 'package:sample_app/widgets/button_widget.dart';
-import 'package:http/http.dart' as http;
 import 'package:get_storage/get_storage.dart';
 import 'package:sample_app/widgets/dialog_widget.dart';
 import 'package:sample_app/widgets/text_widget.dart';
 import 'package:sample_app/widgets/textformfield_widget.dart';
-import '../../utils/api_config.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -30,13 +27,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   bool isNotHidden = true;
-
-  changeVisibility() async {
-    await Future.delayed(const Duration(seconds: 3));
-    setState(() {
-      isNotHidden = true;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,50 +66,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: ButtonWidget(
                   onPressed: () async {
                     try {
-                      final box = GetStorage();
-                      var jsonResponse;
-
-                      Map data = {
-                        'email': _emailController.text,
-                        'password': _passwordController.text,
-                      };
-
-                      String body = json.encode(data);
-                      var url = '${APIConfig().baseUrl}/login';
-                      var response = await http.post(
-                        Uri.parse(url),
-                        body: body,
-                        headers: {
-                          "Content-Type": "application/json",
-                          "accept": "application/json",
-                          "Access-Control-Allow-Origin": "*"
-                        },
-                      ).timeout(const Duration(seconds: 10));
-
-                      // print(response.body["token"]);
-                      // prefs.setString("token", jsonResponse['response']['token']);
-
-                      print(response.statusCode);
-
-                      if (response.statusCode == 201) {
-                        jsonResponse = json.decode(response.body.toString());
-                        print(
-                            'login access token is -> ${json.decode(response.body)['token']}');
-
-                        // ignore: avoid_print
-                        print('success');
-                      } else {
-                        print('error');
-                      }
-                      box.write('token', json.decode(response.body)['token']);
-
-                      await Future.delayed(const Duration(seconds: 1));
-
-                      print(box.read('token'));
-
-                      GetProductList().getPageLength('/products');
-
-                      box.write('page', 1);
+                      login(_emailController.text, _passwordController.text);
 
                       GoRouter.of(context).replace('/home');
                     } catch (e) {
@@ -133,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
                     setState(() {
                       isNotHidden = false;
                     });
-                    changeVisibility();
+                    ApiCallHandling().putDelay(isNotHidden);
                   },
                   text: 'Login',
                 ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sample_app/services/api_call_handling.dart';
 
 import '../../models/products_model.dart';
 import '../../services/http/http_delete/delete_products.dart';
@@ -63,13 +64,6 @@ class _ViewProductListState extends State<ViewProductList> {
   }
 
   bool isNotHidden = true;
-
-  changeVisibility() async {
-    await Future.delayed(const Duration(seconds: 3));
-    setState(() {
-      isNotHidden = true;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -390,7 +384,7 @@ class _ViewProductListState extends State<ViewProductList> {
                                 setState(() {
                                   isNotHidden = false;
                                 });
-                                changeVisibility();
+                                ApiCallHandling().putDelay(isNotHidden);
                                 GoRouter.of(context).replace('/home');
                               },
                               text: 'Add Product'),

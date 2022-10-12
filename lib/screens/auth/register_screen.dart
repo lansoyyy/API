@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sample_app/services/api_call_handling.dart';
 import 'package:sample_app/widgets/button_widget.dart';
 import 'package:sample_app/widgets/dialog_widget.dart';
 import 'package:sample_app/widgets/textformfield_widget.dart';
@@ -17,13 +18,6 @@ class _RegisterPageState extends State<RegisterPage> {
   final _passwordController = TextEditingController();
 
   bool isNotHidden = true;
-
-  changeVisibility() async {
-    await Future.delayed(const Duration(seconds: 3));
-    setState(() {
-      isNotHidden = true;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +72,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       setState(() {
                         isNotHidden = false;
                       });
-                      changeVisibility();
+                      ApiCallHandling().putDelay(isNotHidden);
                     },
                     text: 'Register'),
               ),
