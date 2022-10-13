@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sample_app/services/api_call_handling.dart';
 import 'package:sample_app/widgets/button_widget.dart';
 import 'package:sample_app/widgets/dialog_widget.dart';
@@ -24,7 +25,10 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.pink[200],
-        title: const Text('Register'),
+        title: Text(
+          'Register',
+          style: GoogleFonts.fuzzyBubbles(),
+        ),
         centerTitle: true,
       ),
       body: SingleChildScrollView(

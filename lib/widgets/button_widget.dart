@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ButtonWidget extends StatelessWidget {
   late VoidCallback onPressed;
@@ -13,16 +14,19 @@ class ButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(100),
-        ),
-        minWidth: 250,
-        color: Colors.pink[200],
-        onPressed: onPressed,
-        child: Text(
-          text,
-          style: const TextStyle(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(100),
+      ),
+      minWidth: 250,
+      color: Colors.pink[200],
+      onPressed: onPressed,
+      child: Text(
+        text,
+        style: GoogleFonts.fuzzyBubbles(
+          textStyle: const TextStyle(
               color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
-        ));
+        ),
+      ),
+    );
   }
 }

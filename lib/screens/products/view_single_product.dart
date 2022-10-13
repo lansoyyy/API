@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ProductPage extends StatelessWidget {
   final box = GetStorage();
@@ -9,7 +10,10 @@ class ProductPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.pink[200],
-        title: const Text('Product Name'),
+        title: Text(
+          'Product Name',
+          style: GoogleFonts.fuzzyBubbles(),
+        ),
         centerTitle: true,
       ),
       body: Center(
