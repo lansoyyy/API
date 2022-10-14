@@ -13,10 +13,13 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     // TODO: implement initState
     getToken();
+
     super.initState();
   }
 
-  getToken() async {
+  String? token;
+
+  Future<String?> getToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     return prefs.getString('token');
@@ -24,7 +27,12 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(getToken());
-    return getToken() == "" ? LoginScreen() : const HomeScreen();
+    getToken().then((value) {
+      setState(() {
+        token = value;
+      });
+    });
+
+    return token == "" ? LoginScreen() : const HomeScreen();
   }
 }
