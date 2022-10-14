@@ -20,11 +20,13 @@ class ButtonWidget extends StatelessWidget {
       minWidth: 250,
       color: Colors.pink[200],
       onPressed: onPressed,
-      child: Text(
-        text,
-        style: GoogleFonts.fuzzyBubbles(
-          textStyle: const TextStyle(
-              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+      child: Container(
+        child: Text(
+          text,
+          style: GoogleFonts.fuzzyBubbles(
+            textStyle: const TextStyle(
+                color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+          ),
         ),
       ),
     );
