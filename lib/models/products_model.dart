@@ -11,12 +11,14 @@ class Product {
   String price;
   int? currentpage;
   int? lastpage;
+  String? imageLink;
 
   Product(
       {required this.id,
       required this.userid,
       required this.name,
       required this.price,
+      this.imageLink,
       this.currentpage,
       this.lastpage});
 }

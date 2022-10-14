@@ -88,13 +88,7 @@ class _HomePageState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: RefreshIndicator(
-        onRefresh: () {
-          return Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => const HomeScreen()));
-        },
-        child: const ViewProductList(),
-      ),
+      body: const ViewProductList(),
     );
   }
 }

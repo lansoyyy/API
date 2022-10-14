@@ -96,8 +96,7 @@ class ProductRepository {
     // Uri url = Uri.parse("${AppConfig().api_BASEURL}/api/products?page=$page");
 
     var response = await http.get(
-        Uri.parse(
-            "${APIConfig().baseUrl}/api/$page?page=${prefs.getInt('page')}"),
+        Uri.parse("${APIConfig().baseUrl}$page?page=${prefs.getInt('page')}"),
         headers: {
           "Content-Type": "application/json",
           "accept": "application/json",
@@ -105,21 +104,23 @@ class ProductRepository {
           "Authorization": 'Bearer ${prefs.getString('token')}'
         });
     var jsonData = json.decode(response.body);
-    int lastPage = (jsonData['last_page']);
-    print(jsonData['last_page']);
-    print('this is lastpage inside func $lastPage');
-    SharedPreferences lastpage = await SharedPreferences.getInstance();
-    lastpage.setInt('last_page', lastPage);
-    Map data = {'current_page': page, 'last_page': lastPage};
+
+    prefs.setInt('pageLength', jsonData['last_page']);
 
     var jsonArray = jsonData['data'];
+
+    print(jsonData['data']);
+    print("${APIConfig().baseUrl}/api/$page?page=${prefs.getInt('page')}");
+
     List<Product> products = [];
     for (var jsonProduct in jsonArray) {
       Product product = Product(
           id: jsonProduct['id'],
           userid: jsonProduct['user_id'],
           name: jsonProduct['name'],
-          price: jsonProduct['price']);
+          price: jsonProduct['price'],
+          imageLink: jsonProduct['image_link']);
+
       products.add(product);
     }
     return products;
