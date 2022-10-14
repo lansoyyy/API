@@ -4,6 +4,23 @@
 
 import 'dart:convert';
 
+class Product {
+  int id;
+  int userid;
+  String name;
+  String price;
+  int? currentpage;
+  int? lastpage;
+
+  Product(
+      {required this.id,
+      required this.userid,
+      required this.name,
+      required this.price,
+      this.currentpage,
+      this.lastpage});
+}
+
 ProductModel productModelFromJson(String str) =>
     ProductModel.fromJson(json.decode(str));
 
@@ -24,6 +41,7 @@ class ProductModel {
     this.prevPageUrl,
     this.to,
     this.total,
+    required id,
   });
 
   int? currentPage;
@@ -54,6 +72,7 @@ class ProductModel {
         prevPageUrl: json["prev_page_url"],
         to: json["to"],
         total: json["total"],
+        id: null,
       );
 
   Map<String, dynamic> toJson() => {
@@ -133,13 +152,13 @@ class Link {
   bool? active;
 
   factory Link.fromJson(Map<String, dynamic> json) => Link(
-        url: json["url"] == null ? null : json["url"],
+        url: json["url"],
         label: json["label"],
         active: json["active"],
       );
 
   Map<String, dynamic> toJson() => {
-        "url": url == null ? null : url,
+        "url": url,
         "label": label,
         "active": active,
       };

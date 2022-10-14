@@ -91,41 +91,38 @@ class ProductRepository {
     }
   }
 
-  Future<ProductModel> getMultipleProducts(String api) async {
+  Future<List<Product>> getMultipleProducts(String page) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var uri = Uri.parse('${APIConfig().baseUrl}$api?page=4');
+    // Uri url = Uri.parse("${AppConfig().api_BASEURL}/api/products?page=$page");
 
-    final headers = await http.get(
-      uri,
-      headers: {
-        "Content-Type": "application/json",
-        "accept": "application/json",
-        "Access-Control-Allow-Origin": "*",
-        "Authorization": "Bearer ${prefs.getString('token')}"
-      },
-    );
+    var response = await http.get(
+        Uri.parse(
+            "${APIConfig().baseUrl}/api/$page?page=${prefs.getInt('page')}"),
+        headers: {
+          "Content-Type": "application/json",
+          "accept": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Authorization": 'Bearer ${prefs.getString('token')}'
+        });
+    var jsonData = json.decode(response.body);
+    int lastPage = (jsonData['last_page']);
+    print(jsonData['last_page']);
+    print('this is lastpage inside func $lastPage');
+    SharedPreferences lastpage = await SharedPreferences.getInstance();
+    lastpage.setInt('last_page', lastPage);
+    Map data = {'current_page': page, 'last_page': lastPage};
 
-    var jsonResponse = jsonDecode(headers.body.toString());
-
-    prefs.setString('jsonData', jsonResponse);
-
-    print(jsonResponse['data']);
-    print('${prefs.getInt('page')}');
-
-    // if (jsonResponse['data'].toString() == "[]") {
-    //   print('page is empty');
-    // } else if (jsonResponse['data'].toString() != "[]") {
-    //   print('page has values');
-    // }
-
-    var json = headers.body;
-
-    if (headers.statusCode == 201) {
-      return productModelFromJson(json);
-    } else {
-      print('error');
+    var jsonArray = jsonData['data'];
+    List<Product> products = [];
+    for (var jsonProduct in jsonArray) {
+      Product product = Product(
+          id: jsonProduct['id'],
+          userid: jsonProduct['user_id'],
+          name: jsonProduct['name'],
+          price: jsonProduct['price']);
+      products.add(product);
     }
-    return productModelFromJson(json);
+    return products;
   }
 
   Future<void> getSingleProduct(int id) async {

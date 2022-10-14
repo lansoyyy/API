@@ -371,7 +371,11 @@ class _ViewProductListState extends State<ViewProductList> {
             ),
             minWidth: 250,
             color: Colors.pink[200],
-            onPressed: () {
+            onPressed: () async {
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              print(prefs.getString('token'));
+              print(prefs.getInt('page'));
+              print(prefs.getInt('pageLength'));
               showDialog(
                   context: context,
                   builder: ((context) {
