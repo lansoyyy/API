@@ -19,19 +19,19 @@ GoRouter routes = GoRouter(
     GoRoute(
       path: '/login',
       builder: (BuildContext context, GoRouterState state) {
-        return LoginPage();
+        return LoginScreen();
       },
     ),
     GoRoute(
       path: '/home',
       builder: (BuildContext context, GoRouterState state) {
-        return const HomePage();
+        return const HomeScreen();
       },
     ),
     GoRoute(
       path: '/signup',
       builder: (BuildContext context, GoRouterState state) {
-        return RegisterPage();
+        return RegisterScreen();
       },
     ),
     GoRoute(

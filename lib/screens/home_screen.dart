@@ -1,25 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sample_app/repositories/auth_repository.dart';
+import 'package:sample_app/repositories/product_repository.dart';
 import 'package:sample_app/screens/products/view_product_list.dart';
 
 import 'package:sample_app/models/products_model.dart';
-import "package:get_storage/get_storage.dart";
 import 'package:sample_app/widgets/dialog_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import '../services/http/http_get/get_product_list.dart';
-import '../services/http/http_post/post_logout.dart';
 import '../widgets/text_widget.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomeScreen> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  final box = GetStorage();
-
+class _HomePageState extends State<HomeScreen> {
   var isLoaded = false;
 
   late String token = '';
@@ -43,7 +41,7 @@ class _HomePageState extends State<HomePage> {
   final bool _selected = false;
 
   getProductData() async {
-    products = (await GetProductList().getMultipleProducts('/products'))
+    products = (await ProductRepository().getMultipleProducts('/products'))
         as List<ProductModel?>;
     setState(() {
       hasLoaded = true;
@@ -71,10 +69,12 @@ class _HomePageState extends State<HomePage> {
             fontWeight: FontWeight.bold),
         actions: [
           IconButton(
-            onPressed: () {
+            onPressed: () async {
+              SharedPreferences prefs = await SharedPreferences.getInstance();
               try {
-                logout(email, password);
-                box.write('token', '');
+                AuthRepository().logout(email, password);
+
+                prefs.setString('token', '');
                 GoRouter.of(context).replace('/login');
               } catch (e) {
                 showDialog(
@@ -91,7 +91,7 @@ class _HomePageState extends State<HomePage> {
       body: RefreshIndicator(
         onRefresh: () {
           return Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => const HomePage()));
+              MaterialPageRoute(builder: (context) => const HomeScreen()));
         },
         child: const ViewProductList(),
       ),

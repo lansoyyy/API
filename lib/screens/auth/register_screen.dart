@@ -2,18 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sample_app/services/api_call_handling.dart';
+import 'package:sample_app/repositories/auth_repository.dart';
 import 'package:sample_app/widgets/button_widget.dart';
 import 'package:sample_app/widgets/dialog_widget.dart';
 import 'package:sample_app/widgets/textformfield_widget.dart';
 
-import '../../services/http/http_post/post_register.dart';
-
-class RegisterPage extends StatefulWidget {
+class RegisterScreen extends StatefulWidget {
   @override
-  State<RegisterPage> createState() => _RegisterPageState();
+  State<RegisterScreen> createState() => _RegisterPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class _RegisterPageState extends State<RegisterScreen> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -63,7 +62,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 child: ButtonWidget(
                     onPressed: () {
                       try {
-                        register(_emailController.text,
+                        AuthRepository().register(_emailController.text,
                             _passwordController.text, _nameController.text);
                         GoRouter.of(context).replace('/');
                       } catch (e) {

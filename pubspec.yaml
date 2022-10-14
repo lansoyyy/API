@@ -38,7 +38,6 @@ dependencies:
   cupertino_icons: ^1.0.2
   http:
   shared_preferences: ^2.0.15
-  get_storage:
   flutter_slidable:
   go_router: ^5.0.5
   email_validator: ^2.1.17

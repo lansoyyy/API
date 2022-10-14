@@ -1,9 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-class ProductPage extends StatelessWidget {
-  final box = GetStorage();
+import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+class ProductPage extends StatefulWidget {
+  @override
+  State<ProductPage> createState() => _ProductPageState();
+}
+
+class _ProductPageState extends State<ProductPage> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  late String productName = '';
+  late String imageLink = '';
+  late String productPrice = '';
+
+  getSingleProductData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      productName = prefs.getString('product_name')!;
+      imageLink = prefs.getString('product_image_link')!;
+      productPrice = prefs.getString('product_price')!;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +44,7 @@ class ProductPage extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.all(20.0),
-              child: Image.network(box.read('singleProductData')['image_link']),
+              child: Image.network(imageLink),
             ),
             const SizedBox(
               height: 20,
@@ -35,18 +58,17 @@ class ProductPage extends StatelessWidget {
                 tileColor: Colors.pink[200],
                 leading: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Image.network(
-                      box.read('singleProductData')['image_link']),
+                  child: Image.network(imageLink),
                 ),
                 title: Text(
-                  box.read('singleProductData')['name'],
+                  productName,
                   style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
                       color: Colors.white),
                 ),
                 trailing: Text(
-                  box.read('singleProductData')['price'],
+                  productPrice,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,

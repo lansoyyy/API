@@ -1,21 +1,23 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sample_app/services/api_call_handling.dart';
-import 'package:sample_app/services/http/http_post/post_login.dart';
 import 'package:sample_app/widgets/button_widget.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:sample_app/widgets/dialog_widget.dart';
 import 'package:sample_app/widgets/text_widget.dart';
 import 'package:sample_app/widgets/textformfield_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class LoginPage extends StatefulWidget {
+import '../../services/product_service/get_page_length.dart';
+import '../../utils/api_config.dart';
+
+class LoginScreen extends StatefulWidget {
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<LoginScreen> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  final box = GetStorage();
-
+class _LoginPageState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -66,7 +68,51 @@ class _LoginPageState extends State<LoginPage> {
                 child: ButtonWidget(
                   onPressed: () async {
                     try {
-                      login(_emailController.text, _passwordController.text);
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      var jsonResponse;
+
+                      Map data = {
+                        'email': _emailController.text,
+                        'password': _passwordController.text,
+                      };
+
+                      String body = json.encode(data);
+                      var url = '${APIConfig().baseUrl}/login';
+                      var response = await http.post(
+                        Uri.parse(url),
+                        body: body,
+                        headers: {
+                          "Content-Type": "application/json",
+                          "accept": "application/json",
+                          "Access-Control-Allow-Origin": "*"
+                        },
+                      ).timeout(const Duration(seconds: 10));
+
+                      // print(response.body["token"]);
+                      // prefs.setString("token", jsonResponse['response']['token']);
+
+                      print(response.statusCode);
+
+                      if (response.statusCode == 201) {
+                        jsonResponse = json.decode(response.body.toString());
+                        print(
+                            'login access token is -> ${json.decode(response.body)['token']}');
+
+                        // ignore: avoid_print
+                        print('success');
+                      } else {
+                        print('error');
+                      }
+
+                      prefs.setString(
+                          'token', json.decode(response.body)['token']);
+
+                      await Future.delayed(const Duration(seconds: 1));
+
+                      getPageLength('/products');
+
+                      prefs.setInt('page', 1);
 
                       GoRouter.of(context).replace('/home');
                     } catch (e) {
