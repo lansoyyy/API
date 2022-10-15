@@ -261,10 +261,9 @@ class _ViewProductListState extends State<ViewProductList> {
                                                             const EdgeInsets
                                                                     .fromLTRB(
                                                                 10, 10, 10, 0),
-                                                        child: product.imageLink
-                                                                .toString()
-                                                                .contains(
-                                                                    'http')
+                                                        child: Uri.parse(product
+                                                                    .imageLink!)
+                                                                .isAbsolute
                                                             ? Image.network(
                                                                 product
                                                                     .imageLink!)
