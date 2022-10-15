@@ -268,16 +268,29 @@ class _ViewProductListState extends State<ViewProductList> {
                                                                 product
                                                                     .imageLink!)
                                                             : Center(
-                                                                child: TextWidget(
-                                                                    text:
-                                                                        'Image Cannot Load',
-                                                                    color: Colors
-                                                                        .black,
-                                                                    fontSize:
-                                                                        18,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold),
+                                                                child: Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .center,
+                                                                  children: [
+                                                                    const CircularProgressIndicator(
+                                                                      color: Colors
+                                                                          .white,
+                                                                    ),
+                                                                    const SizedBox(
+                                                                      width: 20,
+                                                                    ),
+                                                                    TextWidget(
+                                                                        text:
+                                                                            'Error Loading Image',
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontSize:
+                                                                            18,
+                                                                        fontWeight:
+                                                                            FontWeight.bold),
+                                                                  ],
+                                                                ),
                                                               ),
                                                       ),
                                                     ),
