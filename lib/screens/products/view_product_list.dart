@@ -135,9 +135,16 @@ class _ViewProductListState extends State<ViewProductList> {
                                                       builder: ((context) {
                                                         return AlertDialog(
                                                           backgroundColor:
-                                                              Colors.grey,
-                                                          title: const Text(
-                                                              'Enter Product Description'),
+                                                              Colors.grey[200],
+                                                          title: TextWidget(
+                                                              text:
+                                                                  'Enter Product Description',
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 14,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .normal),
                                                           content: Column(
                                                             children: [
                                                               TextFormFieldWidget(
@@ -193,7 +200,7 @@ class _ViewProductListState extends State<ViewProductList> {
                                                                   }
                                                                 },
                                                                 text:
-                                                                    'Add Product'),
+                                                                    'Add Cake'),
                                                           ],
                                                         );
                                                       }));
@@ -479,7 +486,11 @@ class _ViewProductListState extends State<ViewProductList> {
                   builder: ((context) {
                     return AlertDialog(
                       backgroundColor: Colors.grey[200],
-                      title: const Text('Enter Product Description'),
+                      title: TextWidget(
+                          text: 'Enter Product Description',
+                          color: Colors.black,
+                          fontSize: 14,
+                          fontWeight: FontWeight.normal),
                       content: Column(
                         children: [
                           TextFormFieldWidget(
@@ -521,14 +532,14 @@ class _ViewProductListState extends State<ViewProductList> {
                                 ApiCallHandling().putDelay(isNotHidden);
                                 GoRouter.of(context).replace('/home');
                               },
-                              text: 'Add Product'),
+                              text: 'Add Cake'),
                         )
                       ],
                     );
                   }));
             },
             child: TextWidget(
-                text: 'Add Product',
+                text: 'Add Cake',
                 color: Colors.white,
                 fontSize: 18,
                 fontWeight: FontWeight.bold),
