@@ -105,14 +105,22 @@ class _ViewProductListState extends State<ViewProductList> {
                                       Product product = products[index];
                                       return GestureDetector(
                                         onTap: () async {
+                                          SharedPreferences prefs =
+                                              await SharedPreferences
+                                                  .getInstance();
                                           ProductRepository()
                                               .getSingleProduct(product.id);
 
                                           await Future.delayed(
                                               const Duration(seconds: 3));
+                                          prefs.setString('product_image_link',
+                                              product.imageLink!);
+                                          prefs.setString(
+                                              'product_name', product.name);
+                                          prefs.setString(
+                                              'product_price', product.price);
 
-                                          GoRouter.of(context)
-                                              .replace('/product');
+                                          GoRouter.of(context).push('/product');
                                         },
                                         child: Slidable(
                                           closeOnScroll: true,

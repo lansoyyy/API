@@ -110,6 +110,7 @@ class ProductRepository {
     var jsonArray = jsonData['data'];
 
     print(jsonData['data']);
+
     print("${APIConfig().baseUrl}/api/$page?page=${prefs.getInt('page')}");
 
     List<Product> products = [];
