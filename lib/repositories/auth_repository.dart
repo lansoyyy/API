@@ -1,18 +1,20 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:sample_app/repositories/auth_repository_interface.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../utils/api_config.dart';
 import '../services/product_service/get_page_length.dart';
 
-class AuthRepository {
+class AuthRepository implements AuthRepositoryInterface {
+  @override
   Future<void> login(email, password) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     var jsonResponse;
 
     Map data = {
-      'email': email.text,
-      'password': password.text,
+      'email': email,
+      'password': password,
     };
 
     String body = json.encode(data);

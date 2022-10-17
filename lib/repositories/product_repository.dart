@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:sample_app/repositories/product_repository_interface.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../utils/api_config.dart';
 import '../models/products_model.dart';
 
-class ProductRepository {
+class ProductRepository implements ProductRepositoryInterface {
   Future<void> putProduct(
       int id, String name, String price, String imageLink) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
