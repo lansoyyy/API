@@ -432,7 +432,7 @@ class _ViewProductListState extends State<ViewProductList> {
                               await SharedPreferences.getInstance();
                           print(prefs.getInt('page')!);
                           print(prefs.getInt('pageLength')!);
-                          if (prefs.getInt('page')! >
+                          if (prefs.getInt('page')! >=
                               prefs.getInt('pageLength')!) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
@@ -444,7 +444,7 @@ class _ViewProductListState extends State<ViewProductList> {
                               prefs.getInt('pageLength')!) {
                             ProductRepository()
                                 .getMultipleProducts('/products');
-                            await Future.delayed(const Duration(seconds: 3));
+                            await Future.delayed(const Duration(seconds: 1));
 
                             setState(() {
                               int newPage = 0;
