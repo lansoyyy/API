@@ -112,7 +112,7 @@ class _ViewProductListState extends State<ViewProductList> {
                                               .getSingleProduct(product.id);
 
                                           await Future.delayed(
-                                              const Duration(seconds: 3));
+                                              const Duration(seconds: 1));
                                           prefs.setString('product_image_link',
                                               product.imageLink!);
                                           prefs.setString(
@@ -181,13 +181,6 @@ class _ViewProductListState extends State<ViewProductList> {
                                                                             .text,
                                                                         product
                                                                             .imageLink!);
-
-                                                                    await Future.delayed(const Duration(
-                                                                        seconds:
-                                                                            5));
-                                                                    GoRouter.of(
-                                                                            context)
-                                                                        .go('/home');
                                                                   } catch (e) {
                                                                     showDialog(
                                                                         context:
@@ -198,6 +191,9 @@ class _ViewProductListState extends State<ViewProductList> {
                                                                               content: e.toString());
                                                                         }));
                                                                   }
+                                                                  GoRouter.of(
+                                                                          context)
+                                                                      .go('/home');
                                                                 },
                                                                 text:
                                                                     'Add Cake'),
@@ -407,7 +403,7 @@ class _ViewProductListState extends State<ViewProductList> {
                           } else {
                             ProductRepository()
                                 .getMultipleProducts('/products');
-                            await Future.delayed(const Duration(seconds: 3));
+                            await Future.delayed(const Duration(seconds: 1));
 
                             setState(() {
                               int newPage = 0;
@@ -420,11 +416,22 @@ class _ViewProductListState extends State<ViewProductList> {
                             GoRouter.of(context).replace('/home');
                           }
                         },
-                        child: TextWidget(
-                            text: 'Go back',
-                            color: Colors.pink[200]!,
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100),
+                            border: Border.all(
+                              color: Colors.pink[200]!,
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(7, 2, 7, 2),
+                            child: TextWidget(
+                                text: 'Go Back',
+                                color: Colors.pink[200]!,
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
                       ),
                       trailing: TextButton(
                         onPressed: () async {
@@ -456,93 +463,107 @@ class _ViewProductListState extends State<ViewProductList> {
                             GoRouter.of(context).replace('/home');
                           }
                         },
-                        child: TextWidget(
-                            text: 'View more',
-                            color: Colors.pink[200]!,
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100),
+                            border: Border.all(
+                              color: Colors.pink[200]!,
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(7, 2, 7, 2),
+                            child: TextWidget(
+                                text: 'View more',
+                                color: Colors.pink[200]!,
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
                       )),
                 ),
               ],
             ),
           ),
         ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: MaterialButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            minWidth: 250,
-            color: Colors.pink[200],
-            onPressed: () async {
-              SharedPreferences prefs = await SharedPreferences.getInstance();
-              print(prefs.getString('token'));
-              print(prefs.getInt('page'));
-              print(prefs.getInt('pageLength'));
-              ProductRepository().getMultipleProducts('/products');
-              showDialog(
-                  context: context,
-                  builder: ((context) {
-                    return AlertDialog(
-                      backgroundColor: Colors.grey[200],
-                      title: TextWidget(
-                          text: 'Enter Product Description',
-                          color: Colors.black,
-                          fontSize: 14,
-                          fontWeight: FontWeight.normal),
-                      content: Column(
-                        children: [
-                          TextFormFieldWidget(
-                              isEmail: false,
-                              isPassword: false,
-                              inputController: _addNameController,
-                              label: 'Product Name'),
-                          TextFormFieldWidget(
-                              isEmail: false,
-                              isPassword: false,
-                              inputController: _addDescriptionController,
-                              label: 'Product Description'),
-                          TextFormFieldWidget(
-                              isEmail: false,
-                              isPassword: false,
-                              inputController: _addPriceController,
-                              label: 'Product Price'),
-                          TextFormFieldWidget(
-                              isEmail: false,
-                              isPassword: false,
-                              inputController: _addImageUrlController,
-                              label: 'Product Image URL'),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 10),
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: MaterialButton(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              minWidth: 250,
+              color: Colors.pink[200],
+              onPressed: () async {
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                print(prefs.getString('token'));
+                print(prefs.getInt('page'));
+                print(prefs.getInt('pageLength'));
+                ProductRepository().getMultipleProducts('/products');
+                showDialog(
+                    context: context,
+                    builder: ((context) {
+                      return AlertDialog(
+                        backgroundColor: Colors.grey[200],
+                        title: TextWidget(
+                            text: 'Enter Product Description',
+                            color: Colors.black,
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal),
+                        content: Column(
+                          children: [
+                            TextFormFieldWidget(
+                                isEmail: false,
+                                isPassword: false,
+                                inputController: _addNameController,
+                                label: 'Product Name'),
+                            TextFormFieldWidget(
+                                isEmail: false,
+                                isPassword: false,
+                                inputController: _addDescriptionController,
+                                label: 'Product Description'),
+                            TextFormFieldWidget(
+                                isEmail: false,
+                                isPassword: false,
+                                inputController: _addPriceController,
+                                label: 'Product Price'),
+                            TextFormFieldWidget(
+                                isEmail: false,
+                                isPassword: false,
+                                inputController: _addImageUrlController,
+                                label: 'Product Image URL'),
+                          ],
+                        ),
+                        actions: [
+                          Visibility(
+                            visible: isNotHidden,
+                            child: ButtonWidget(
+                                onPressed: () async {
+                                  ProductRepository().addProduct(
+                                      _addNameController.text,
+                                      _addImageUrlController.text,
+                                      _addDescriptionController.text,
+                                      int.parse(_addPriceController.text),
+                                      true);
+                                  setState(() {
+                                    isNotHidden = false;
+                                  });
+                                  ApiCallHandling().putDelay(isNotHidden);
+                                  GoRouter.of(context).replace('/home');
+                                },
+                                text: 'Add Cake'),
+                          )
                         ],
-                      ),
-                      actions: [
-                        Visibility(
-                          visible: isNotHidden,
-                          child: ButtonWidget(
-                              onPressed: () async {
-                                ProductRepository().addProduct(
-                                    _addNameController.text,
-                                    _addImageUrlController.text,
-                                    _addDescriptionController.text,
-                                    int.parse(_addPriceController.text),
-                                    true);
-                                setState(() {
-                                  isNotHidden = false;
-                                });
-                                ApiCallHandling().putDelay(isNotHidden);
-                                GoRouter.of(context).replace('/home');
-                              },
-                              text: 'Add Cake'),
-                        )
-                      ],
-                    );
-                  }));
-            },
-            child: TextWidget(
-                text: 'Add Cake',
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold),
+                      );
+                    }));
+              },
+              child: TextWidget(
+                  text: 'Add Cake',
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold),
+            ),
           ),
         ),
       ],

@@ -1,6 +1,5 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:sample_app/widgets/text_widget.dart';
 
 class TextFormFieldWidget extends StatelessWidget {
   late TextEditingController inputController;
@@ -52,11 +51,12 @@ class TextFormFieldWidget extends StatelessWidget {
                 prefixIcon,
                 color: Colors.pink[200],
               ),
-              label: TextWidget(
-                  text: label,
-                  color: Colors.black,
-                  fontSize: 14,
-                  fontWeight: FontWeight.normal),
+              hintText: label,
+              hintStyle: const TextStyle(
+                fontFamily: 'QRegular',
+                fontSize: 12,
+                color: Colors.black,
+              ),
             ),
           ),
         ),

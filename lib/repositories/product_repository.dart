@@ -35,7 +35,7 @@ class ProductRepository {
 
     print(response.statusCode);
 
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200) {
       // ignore: avoid_print
       print('success');
     } else {

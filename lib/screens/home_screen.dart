@@ -63,7 +63,7 @@ class _HomePageState extends State<HomeScreen> {
         centerTitle: true,
         backgroundColor: Colors.pink[200],
         title: TextWidget(
-            text: 'Products',
+            text: 'Product List',
             color: Colors.white,
             fontSize: 18,
             fontWeight: FontWeight.bold),

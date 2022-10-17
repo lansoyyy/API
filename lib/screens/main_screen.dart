@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sample_app/screens/auth/login_screen.dart';
-import 'package:sample_app/screens/home_screen.dart';
+import 'package:sample_app/screens/loading_screens/loading_screen_toHome.dart';
+import 'package:sample_app/screens/loading_screens/loading_screen_toLogin.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MainScreen extends StatefulWidget {
@@ -33,6 +33,6 @@ class _MainScreenState extends State<MainScreen> {
       });
     });
 
-    return token == "" ? LoginScreen() : const HomeScreen();
+    return token == "" ? LoadingScreenToLogin() : LoadingScreenToHome();
   }
 }
