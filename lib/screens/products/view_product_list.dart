@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sample_app/repositories/product_repository.dart';
 import 'package:sample_app/services/api_call_handling.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import '../../models/products_model.dart';
 
 import '../../widgets/button_widget.dart';
@@ -94,296 +95,343 @@ class _ViewProductListState extends State<ViewProductList> {
                                         fontWeight: FontWeight.bold),
                                   );
                                 } else if (snapshot.data == null) {
-                                  return const Center(
-                                    child: CircularProgressIndicator(),
+                                  return Center(
+                                    child: SpinKitCubeGrid(
+                                      color: Colors.pink[400],
+                                    ),
                                   );
                                 } else {
                                   List<Product> products = snapshot.data!;
-                                  return ListView.builder(
-                                    itemCount: products.length,
-                                    itemBuilder: (context, index) {
-                                      Product product = products[index];
-                                      return GestureDetector(
-                                        onTap: () async {
-                                          SharedPreferences prefs =
-                                              await SharedPreferences
-                                                  .getInstance();
-                                          ProductRepository()
-                                              .getSingleProduct(product.id);
-
-                                          await Future.delayed(
-                                              const Duration(seconds: 1));
-                                          prefs.setString('product_image_link',
-                                              product.imageLink!);
-                                          prefs.setString(
-                                              'product_name', product.name);
-                                          prefs.setString(
-                                              'product_price', product.price);
-
-                                          GoRouter.of(context).push('/product');
-                                        },
-                                        child: Slidable(
-                                          closeOnScroll: true,
-                                          startActionPane: ActionPane(
-                                            motion: const BehindMotion(),
-                                            children: [
-                                              SlidableAction(
-                                                autoClose: true,
-                                                onPressed: (context) {
-                                                  showDialog(
-                                                      context: context,
-                                                      builder: ((context) {
-                                                        return AlertDialog(
-                                                          backgroundColor:
-                                                              Colors.grey[200],
-                                                          title: TextWidget(
-                                                              text:
-                                                                  'Enter Product Description',
-                                                              color:
-                                                                  Colors.black,
-                                                              fontSize: 14,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .normal),
-                                                          content: Column(
-                                                            children: [
-                                                              TextFormFieldWidget(
-                                                                  isEmail:
-                                                                      false,
-                                                                  isPassword:
-                                                                      false,
-                                                                  inputController:
-                                                                      _nameController,
-                                                                  label: product
-                                                                      .name),
-                                                              TextFormFieldWidget(
-                                                                  isEmail:
-                                                                      false,
-                                                                  isPassword:
-                                                                      false,
-                                                                  inputController:
-                                                                      _priceController,
-                                                                  label: product
-                                                                      .price),
-                                                            ],
-                                                          ),
-                                                          actions: [
-                                                            ButtonWidget(
-                                                                onPressed:
-                                                                    () async {
-                                                                  try {
-                                                                    ProductRepository().putProduct(
-                                                                        product
-                                                                            .id,
-                                                                        _nameController
-                                                                            .text,
-                                                                        _priceController
-                                                                            .text,
-                                                                        product
-                                                                            .imageLink!);
-                                                                  } catch (e) {
-                                                                    showDialog(
-                                                                        context:
-                                                                            context,
-                                                                        builder:
-                                                                            ((context) {
-                                                                          return DialogWidget(
-                                                                              content: e.toString());
-                                                                        }));
-                                                                  }
-                                                                  GoRouter.of(
-                                                                          context)
-                                                                      .go('/home');
-                                                                },
-                                                                text:
-                                                                    'Add Cake'),
-                                                          ],
-                                                        );
-                                                      }));
-                                                },
-                                                backgroundColor: Colors.blue,
-                                                foregroundColor: Colors.white,
-                                                icon: Icons.delete,
-                                                label: 'Update',
-                                              )
-                                            ],
-                                          ),
-                                          endActionPane: ActionPane(
-                                            motion: const ScrollMotion(),
-                                            children: [
-                                              SlidableAction(
-                                                onPressed: (context) async {
+                                  return AnimationLimiter(
+                                    child: ListView.builder(
+                                      itemCount: products.length,
+                                      itemBuilder: (context, index) {
+                                        Product product = products[index];
+                                        return AnimationConfiguration
+                                            .staggeredList(
+                                          position: index,
+                                          duration:
+                                              const Duration(milliseconds: 500),
+                                          child: SlideAnimation(
+                                            verticalOffset: 50.0,
+                                            child: FadeInAnimation(
+                                              child: GestureDetector(
+                                                onTap: () async {
+                                                  SharedPreferences prefs =
+                                                      await SharedPreferences
+                                                          .getInstance();
                                                   ProductRepository()
-                                                      .deleteProduct(
+                                                      .getSingleProduct(
                                                           product.id);
 
                                                   await Future.delayed(
                                                       const Duration(
-                                                          seconds: 5));
+                                                          seconds: 1));
+                                                  prefs.setString(
+                                                      'product_image_link',
+                                                      product.imageLink!);
+                                                  prefs.setString(
+                                                      'product_name',
+                                                      product.name);
+                                                  prefs.setString(
+                                                      'product_price',
+                                                      product.price);
+
                                                   GoRouter.of(context)
-                                                      .replace('/home');
+                                                      .push('/product');
                                                 },
-                                                backgroundColor: Colors.red,
-                                                foregroundColor: Colors.white,
-                                                icon: Icons.delete,
-                                                label: 'Delete',
-                                              )
-                                            ],
-                                          ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.fromLTRB(
-                                                30, 10, 30, 10),
-                                            child: Column(
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.fromLTRB(
-                                                          10, 10, 10, 0),
-                                                  child: Banner(
-                                                    color: Colors.blue,
-                                                    message: 'HOT SALE',
-                                                    location:
-                                                        BannerLocation.topEnd,
-                                                    child: Container(
-                                                      height: 300,
-                                                      width: 400,
-                                                      decoration: BoxDecoration(
-                                                        gradient:
-                                                            LinearGradient(
-                                                                colors: [
-                                                              Colors.pink[300]!,
-                                                              Colors.pink[200]!,
-                                                              Colors.pink[200]!,
-                                                              Colors.pink[300]!,
-                                                            ]),
-                                                        borderRadius:
-                                                            const BorderRadius
-                                                                .only(
-                                                          topLeft:
-                                                              Radius.circular(
-                                                                  10),
-                                                          topRight:
-                                                              Radius.circular(
-                                                                  10),
-                                                        ),
-                                                      ),
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .fromLTRB(
-                                                                10, 10, 10, 0),
-                                                        child: Uri.parse(product
-                                                                    .imageLink!)
-                                                                .isAbsolute
-                                                            ? Image.network(
-                                                                product
-                                                                    .imageLink!)
-                                                            : Center(
-                                                                child: Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .center,
-                                                                  children: [
-                                                                    const CircularProgressIndicator(
+                                                child: Slidable(
+                                                  closeOnScroll: true,
+                                                  startActionPane: ActionPane(
+                                                    motion:
+                                                        const BehindMotion(),
+                                                    children: [
+                                                      SlidableAction(
+                                                        autoClose: true,
+                                                        onPressed: (context) {
+                                                          showDialog(
+                                                              context: context,
+                                                              builder:
+                                                                  ((context) {
+                                                                return AlertDialog(
+                                                                  backgroundColor:
+                                                                      Colors.grey[
+                                                                          200],
+                                                                  title: TextWidget(
+                                                                      text:
+                                                                          'Enter Product Description',
                                                                       color: Colors
-                                                                          .white,
-                                                                    ),
-                                                                    const SizedBox(
-                                                                      width: 20,
-                                                                    ),
-                                                                    TextWidget(
+                                                                          .black,
+                                                                      fontSize:
+                                                                          14,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .normal),
+                                                                  content:
+                                                                      Column(
+                                                                    children: [
+                                                                      TextFormFieldWidget(
+                                                                          isEmail:
+                                                                              false,
+                                                                          isPassword:
+                                                                              false,
+                                                                          inputController:
+                                                                              _nameController,
+                                                                          label:
+                                                                              product.name),
+                                                                      TextFormFieldWidget(
+                                                                          isEmail:
+                                                                              false,
+                                                                          isPassword:
+                                                                              false,
+                                                                          inputController:
+                                                                              _priceController,
+                                                                          label:
+                                                                              product.price),
+                                                                    ],
+                                                                  ),
+                                                                  actions: [
+                                                                    ButtonWidget(
+                                                                        onPressed:
+                                                                            () async {
+                                                                          try {
+                                                                            ProductRepository().putProduct(
+                                                                                product.id,
+                                                                                _nameController.text,
+                                                                                _priceController.text,
+                                                                                product.imageLink!);
+                                                                          } catch (e) {
+                                                                            showDialog(
+                                                                                context: context,
+                                                                                builder: ((context) {
+                                                                                  return DialogWidget(content: e.toString());
+                                                                                }));
+                                                                          }
+                                                                          GoRouter.of(context)
+                                                                              .go('/home');
+                                                                        },
                                                                         text:
-                                                                            'Error Loading Image',
+                                                                            'Add Cake'),
+                                                                  ],
+                                                                );
+                                                              }));
+                                                        },
+                                                        backgroundColor:
+                                                            Colors.blue,
+                                                        foregroundColor:
+                                                            Colors.white,
+                                                        icon: Icons.delete,
+                                                        label: 'Update',
+                                                      )
+                                                    ],
+                                                  ),
+                                                  endActionPane: ActionPane(
+                                                    motion:
+                                                        const ScrollMotion(),
+                                                    children: [
+                                                      SlidableAction(
+                                                        onPressed:
+                                                            (context) async {
+                                                          ProductRepository()
+                                                              .deleteProduct(
+                                                                  product.id);
+
+                                                          await Future.delayed(
+                                                              const Duration(
+                                                                  seconds: 5));
+                                                          GoRouter.of(context)
+                                                              .replace('/home');
+                                                        },
+                                                        backgroundColor:
+                                                            Colors.red,
+                                                        foregroundColor:
+                                                            Colors.white,
+                                                        icon: Icons.delete,
+                                                        label: 'Delete',
+                                                      )
+                                                    ],
+                                                  ),
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                            .fromLTRB(
+                                                        30, 10, 30, 10),
+                                                    child: Column(
+                                                      children: [
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .fromLTRB(
+                                                                  10,
+                                                                  10,
+                                                                  10,
+                                                                  0),
+                                                          child: Banner(
+                                                            color: Colors.blue,
+                                                            message: 'HOT SALE',
+                                                            location:
+                                                                BannerLocation
+                                                                    .topEnd,
+                                                            child: Container(
+                                                              height: 300,
+                                                              width: 400,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                gradient:
+                                                                    LinearGradient(
+                                                                        colors: [
+                                                                      Colors.pink[
+                                                                          300]!,
+                                                                      Colors.pink[
+                                                                          200]!,
+                                                                      Colors.pink[
+                                                                          200]!,
+                                                                      Colors.pink[
+                                                                          300]!,
+                                                                    ]),
+                                                                borderRadius:
+                                                                    const BorderRadius
+                                                                        .only(
+                                                                  topLeft: Radius
+                                                                      .circular(
+                                                                          10),
+                                                                  topRight: Radius
+                                                                      .circular(
+                                                                          10),
+                                                                ),
+                                                              ),
+                                                              child: Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .fromLTRB(
+                                                                        10,
+                                                                        10,
+                                                                        10,
+                                                                        0),
+                                                                child: Uri.parse(product
+                                                                            .imageLink!)
+                                                                        .isAbsolute
+                                                                    ? Image.network(
+                                                                        product
+                                                                            .imageLink!)
+                                                                    : Center(
+                                                                        child:
+                                                                            Row(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.center,
+                                                                          children: [
+                                                                            const SpinKitSpinningLines(
+                                                                              color: Colors.white,
+                                                                              size: 50,
+                                                                            ),
+                                                                            const SizedBox(
+                                                                              width: 20,
+                                                                            ),
+                                                                            TextWidget(
+                                                                                text: 'Error Loading Image',
+                                                                                color: Colors.white,
+                                                                                fontSize: 18,
+                                                                                fontWeight: FontWeight.bold),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Container(
+                                                          height: 60,
+                                                          width: 315,
+                                                          decoration:
+                                                              const BoxDecoration(
+                                                            color: Colors.white,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .only(
+                                                              bottomLeft: Radius
+                                                                  .circular(10),
+                                                              bottomRight:
+                                                                  Radius
+                                                                      .circular(
+                                                                          10),
+                                                            ),
+                                                          ),
+                                                          child: Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .fromLTRB(
+                                                                      10,
+                                                                      10,
+                                                                      0,
+                                                                      10),
+                                                              child: ListTile(
+                                                                title: TextWidget(
+                                                                    text: product
+                                                                        .name,
+                                                                    color: Colors
+                                                                        .black,
+                                                                    fontSize:
+                                                                        18,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                                trailing:
+                                                                    Container(
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            20),
+                                                                    gradient:
+                                                                        LinearGradient(
+                                                                            colors: [
+                                                                          Colors
+                                                                              .pink[500]!,
+                                                                          Colors
+                                                                              .pink[300]!,
+                                                                          Colors
+                                                                              .pink[500]!,
+                                                                        ]),
+                                                                  ),
+                                                                  child:
+                                                                      Padding(
+                                                                    padding: const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            10,
+                                                                        right:
+                                                                            10,
+                                                                        top: 2,
+                                                                        bottom:
+                                                                            2),
+                                                                    child: TextWidget(
+                                                                        text: product
+                                                                            .price,
                                                                         color: Colors
                                                                             .white,
                                                                         fontSize:
-                                                                            18,
+                                                                            22,
                                                                         fontWeight:
                                                                             FontWeight.bold),
-                                                                  ],
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                Container(
-                                                  height: 60,
-                                                  width: 315,
-                                                  decoration:
-                                                      const BoxDecoration(
-                                                    color: Colors.white,
-                                                    borderRadius:
-                                                        BorderRadius.only(
-                                                      bottomLeft:
-                                                          Radius.circular(10),
-                                                      bottomRight:
-                                                          Radius.circular(10),
-                                                    ),
-                                                  ),
-                                                  child: Padding(
-                                                      padding: const EdgeInsets
-                                                              .fromLTRB(
-                                                          10, 10, 0, 10),
-                                                      child: ListTile(
-                                                        title: TextWidget(
-                                                            text: product.name,
-                                                            color: Colors.black,
-                                                            fontSize: 18,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                        trailing: Container(
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        20),
-                                                            gradient:
-                                                                LinearGradient(
-                                                                    colors: [
-                                                                  Colors.pink[
-                                                                      500]!,
-                                                                  Colors.pink[
-                                                                      300]!,
-                                                                  Colors.pink[
-                                                                      500]!,
-                                                                ]),
-                                                          ),
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    left: 10,
-                                                                    right: 10,
-                                                                    top: 2,
-                                                                    bottom: 2),
-                                                            child: TextWidget(
-                                                                text: product
-                                                                    .price,
-                                                                color: Colors
-                                                                    .white,
-                                                                fontSize: 22,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          ),
+                                                              )),
                                                         ),
-                                                      )),
+                                                      ],
+                                                    ),
+                                                  ),
                                                 ),
-                                              ],
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      );
-                                    },
+                                        );
+                                      },
+                                    ),
                                   );
                                 }
                               }),
                         ),
                       )
-                    : const CircularProgressIndicator(),
+                    : SpinKitWave(),
                 Padding(
                   padding: const EdgeInsets.only(left: 20, right: 20),
                   child: ListTile(
