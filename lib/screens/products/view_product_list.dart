@@ -489,8 +489,35 @@ class _ViewProductListState extends State<ViewProductList> {
                                     WavyAnimatedText('Back'),
                                   ],
                                   isRepeatingAnimation: true,
-                                  onTap: () {
-                                    print("Tap Event");
+                                  onTap: () async {
+                                    SharedPreferences prefs =
+                                        await SharedPreferences.getInstance();
+                                    print(prefs.getInt('page')!);
+                                    print(prefs.getInt('pageLength')!);
+                                    if (prefs.getInt('page')! <= 1) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                              'Cannot Procceed. This page is the first page'),
+                                        ),
+                                      );
+                                    } else {
+                                      ProductRepository()
+                                          .getMultipleProducts('/products');
+                                      await Future.delayed(
+                                          const Duration(seconds: 1));
+
+                                      setState(() {
+                                        int newPage = 0;
+
+                                        newPage = prefs.getInt('page')! - 1;
+
+                                        prefs.setInt('page', newPage);
+                                      });
+
+                                      GoRouter.of(context).replace('/home');
+                                    }
                                   },
                                 ),
                               ),
@@ -550,8 +577,35 @@ class _ViewProductListState extends State<ViewProductList> {
                                   WavyAnimatedText('More'),
                                 ],
                                 isRepeatingAnimation: true,
-                                onTap: () {
-                                  print("Tap Event");
+                                onTap: () async {
+                                  SharedPreferences prefs =
+                                      await SharedPreferences.getInstance();
+                                  print(prefs.getInt('page')!);
+                                  print(prefs.getInt('pageLength')!);
+                                  if (prefs.getInt('page')! >=
+                                      prefs.getInt('pageLength')!) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                            'Cannot Procceed. This page is the last page'),
+                                      ),
+                                    );
+                                  } else if (prefs.getInt('page')! <=
+                                      prefs.getInt('pageLength')!) {
+                                    ProductRepository()
+                                        .getMultipleProducts('/products');
+                                    await Future.delayed(
+                                        const Duration(seconds: 1));
+
+                                    setState(() {
+                                      int newPage = 0;
+
+                                      newPage = prefs.getInt('page')! + 1;
+                                      prefs.setInt('page', newPage);
+                                    });
+
+                                    GoRouter.of(context).replace('/home');
+                                  }
                                 },
                               ),
                             ),
