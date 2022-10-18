@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -473,11 +474,27 @@ class _ViewProductListState extends State<ViewProductList> {
                           ),
                           child: Padding(
                             padding: const EdgeInsets.fromLTRB(7, 2, 7, 2),
-                            child: TextWidget(
-                                text: 'Go Back',
-                                color: Colors.pink[200]!,
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold),
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(10, 2, 10, 2),
+                              child: DefaultTextStyle(
+                                style: TextStyle(
+                                  fontSize: 12.0,
+                                  fontFamily: 'QRegular',
+                                  color: Colors.pink[400]!,
+                                ),
+                                child: AnimatedTextKit(
+                                  repeatForever: true,
+                                  animatedTexts: [
+                                    WavyAnimatedText('Go'),
+                                    WavyAnimatedText('Back'),
+                                  ],
+                                  isRepeatingAnimation: true,
+                                  onTap: () {
+                                    print("Tap Event");
+                                  },
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -519,12 +536,25 @@ class _ViewProductListState extends State<ViewProductList> {
                             ),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.fromLTRB(7, 2, 7, 2),
-                            child: TextWidget(
-                                text: 'View more',
-                                color: Colors.pink[200]!,
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold),
+                            padding: const EdgeInsets.fromLTRB(15, 4, 15, 4),
+                            child: DefaultTextStyle(
+                              style: TextStyle(
+                                fontSize: 12.0,
+                                fontFamily: 'QRegular',
+                                color: Colors.pink[400]!,
+                              ),
+                              child: AnimatedTextKit(
+                                repeatForever: true,
+                                animatedTexts: [
+                                  WavyAnimatedText('View'),
+                                  WavyAnimatedText('More'),
+                                ],
+                                isRepeatingAnimation: true,
+                                onTap: () {
+                                  print("Tap Event");
+                                },
+                              ),
+                            ),
                           ),
                         ),
                       )),
@@ -606,11 +636,27 @@ class _ViewProductListState extends State<ViewProductList> {
                       );
                     }));
               },
-              child: TextWidget(
-                  text: 'Add Cake',
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold),
+              child: SizedBox(
+                width: 250.0,
+                child: Center(
+                  child: DefaultTextStyle(
+                    style: const TextStyle(
+                      fontSize: 18.0,
+                      fontFamily: 'QBold',
+                      fontWeight: FontWeight.bold,
+                    ),
+                    child: AnimatedTextKit(
+                      repeatForever: true,
+                      animatedTexts: [
+                        TypewriterAnimatedText('Add Cake'),
+                      ],
+                      onTap: () {
+                        print("Tap Event");
+                      },
+                    ),
+                  ),
+                ),
+              ),
             ),
           ),
         ),
